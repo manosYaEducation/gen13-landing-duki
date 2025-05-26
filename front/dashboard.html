@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Duki Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <style>
+body {
+    background: #18181c;
+    min-height: 100vh;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    margin: 0;
+    display: flex;
+}
+.sidebar {
+    width: 220px;
+    background: #1a1012;
+    border-right: 3px solid #6f0001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2.5rem 1rem 1rem 1rem;
+    min-height: 100vh;
+    box-shadow: 4px 0 32px #6f0001cc;
+}
+.sidebar-logo {
+    width: 80px;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 24px #6f0001);
+}
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    width: 100%;
+}
+.sidebar-link {
+    color: #fff;
+    background: #6f0001;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    font-weight: bold;
+    box-shadow: 0 0 8px #6f0001cc;
+    transition: background 0.2s, color 0.2s;
+}
+.sidebar-link:hover {
+    background: #400208;
+    color: #fff;
+}
+.main-content {
+    flex: 1;
+    padding: 2.5rem 3rem;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+.dashboard-title {
+    font-size: 2.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 0 24px #6f0001, 2px 2px 0 #141418;
+}
+.dashboard-summary {
+    background: #1f1f23;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 0 24px #6f0001cc;
+    display: flex;
+    gap: 2.5rem;
+    justify-content: space-around;
+    align-items: center;
+}
+.summary-item {
+    text-align: center;
+}
+.summary-label {
+    color: #c9cfd3;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+.summary-value {
+    color: #fff;
+    font-size: 2.1rem;
+    font-weight: bold;
+    text-shadow: 0 0 16px #6f0001cc;
+}
+.dashboard-actions {
+    display: flex;
+    gap: 1.6rem;
+    margin-top: 1rem;
+}
+.action-btn {
+    background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 1rem 2.2rem;
+    font-size: 1.2rem;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-weight: bold;
+    letter-spacing: 2px;
+    box-shadow: 0 0 12px #6f0001cc;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    text-shadow: 0 0 8px #fff, 0 0 6px #6f0001;
+}
+.action-btn:hover {
+    background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
+    color: #fff;
+    box-shadow: 0 0 24px #6f0001;
+}
+</style>
+<div class="sidebar">
+    <img src="../assets/ameri.png" alt="Logo" class="sidebar-logo">
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link">Dashboard</a>
+        <a href="tienda.html" class="sidebar-link">Tienda</a>
+        <a href="index.html" class="sidebar-link">Inicio</a>
+        <a href="logout.html" class="sidebar-link">Salir</a>
+    </nav>
+</div>
+<div class="main-content">
+    <div>
+        <div class="dashboard-title">Bienvenido/a, Usuario</div>
+        <div class="dashboard-summary">
+            <div class="summary-item">
+                <div class="summary-label">Compras</div>
+                <div class="summary-value">12</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Favoritos</div>
+                <div class="summary-value">5</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Carrito</div>
+                <div class="summary-value">2</div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-actions">
+        <button class="action-btn">Ver Perfil</button>
+        <button class="action-btn">Historial</button>
+        <button class="action-btn">Configuración</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Estética Duki</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <style>
+body {
+    background: #18181c;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+}
+.login-container {
+    background: #18181c;
+    border-radius: 24px;
+    box-shadow: 0 0 60px 10px #6f0001cc, 0 0 16px #40020899;
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    min-width: 340px;
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2.5px solid #6f0001;
+    position: relative;
+}
+.login-logo {
+    width: 90px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 0 32px #6f0001) drop-shadow(0 0 12px #400208);
+}
+.login-title {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 1.2rem;
+    font-size: 2.4rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 24px #6f0001, 0 0 48px #400208, 2px 2px 0 #141418;
+    filter: brightness(1.15);
+}
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.input-group label {
+    color: #c9cfd3;
+    font-weight: 700;
+    margin-bottom: 2px;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px #899cbc, 0 0 6px #556694;
+    font-size: 1rem;
+}
+.input-group input {
+    padding: 0.6rem 0.8rem;
+    border: 1.5px solid #899cbc;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    background: #141418;
+    color: #c9cfd3;
+    transition: border 0.2s, background 0.2s, color 0.2s;
+    box-shadow: 0 0 8px #55669433, 0 0 6px #899cbc22;
+}
+.input-group input:focus {
+    border: 1.5px solid #6f0001;
+    background: #1f1f23;
+    color: #fff;
+    box-shadow: 0 0 16px #6f0001, 0 0 8px #400208;
+}
+.login-btn {
+    background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
+    color: #fff;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 0.9rem 0;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    box-shadow: 0 0 16px #6f0001cc;
+    margin-top: 1.2rem;
+    cursor: pointer;
+    text-shadow: 0 0 12px #fff, 0 0 8px #6f0001;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.login-btn:hover {
+    background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
+    color: #fff;
+    box-shadow: 0 0 32px #6f0001;
+}
+.login-register {
+    margin-top: 1.2rem;
+    color: #c9cfd3;
+    text-align: center;
+    font-size: 1rem;
+}
+.login-register a {
+    color: #e03838;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 4px;
+}
+.login-register a:hover {
+    text-decoration: underline;
+}
+</style>
+<div class="login-container">
+    <img src="/duki/assets/ameri.png" alt="Logo" class="login-logo">
+    <div class="login-title">INICIAR SESIÓN</div>
+    <form class="login-form" method="POST" action="/duki/login.php">
+        <div class="input-group">
+            <label for="username">Usuario</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="login-btn">ENTRAR</button>
+    </form>
+    <div class="login-register">
+        ¿No tienes cuenta?
+        <a href="/duki/register.php">Regístrate</a>
+    </div>
+</div>
+</body>
+</html>
