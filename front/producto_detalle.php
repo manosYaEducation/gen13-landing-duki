@@ -2,6 +2,13 @@
 // producto_detalle.php
 require_once '../db.php';
 
+// Verificar la ruta base
+echo '<!-- Ruta base: ' . $_SERVER['DOCUMENT_ROOT'] . ' -->';
+echo '<!-- Ruta actual: ' . __FILE__ . ' -->';
+
+// Definir la ruta base
+$base_url = '/landing_duki';
+
 // Obtener el ID del producto desde la URL
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo '<h2>Producto no encontrado.</h2>';
@@ -119,11 +126,11 @@ if (!$prod) {
 <body>
     <div class="navbar" style="display: flex; align-items: center; justify-content: space-between;">
         <div style="display: flex; align-items: center;">
-            <img src="../assets/ameri.png" alt="Logo" class="navbar-logo">
+            <img src="<?php echo $base_url; ?>/assets/ameri.png" alt="Logo" class="navbar-logo">
             <div class="navbar-menu">
-                <a href="index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
-                <a href="index.html" class="navbar-link">INICIO</a>
-                <a href="tienda.php" class="navbar-link">PRODUCTOS</a>
+                <a href="<?php echo $base_url; ?>/front/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
+                <a href="<?php echo $base_url; ?>/front/index.html" class="navbar-link">INICIO</a>
+                <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
                 <a href="#" class="navbar-link">CONTACTO</a>
                 <a href="#" class="navbar-link">CARRITO</a>
             </div>
@@ -131,15 +138,15 @@ if (!$prod) {
         <div style="display: flex; align-items: center; gap: 1.2rem;">
             <?php if (isset($_SESSION['username'])): ?>
                 <div style="color:#fff; font-weight:bold; font-size:1.1rem; display:flex; align-items:center; gap:0.7rem;">
-                    <img src="/duki/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
+                    <img src="<?php echo $base_url; ?>/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
                     <?php echo htmlspecialchars($_SESSION['username']); ?>
                 </div>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <a href="/duki/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
+                    <a href="<?php echo $base_url; ?>/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
                 <?php endif; ?>
-                <a href="/duki/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
+                <a href="<?php echo $base_url; ?>/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
             <?php else: ?>
-                <a href="../login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
+                <a href="<?php echo $base_url; ?>/login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
             <?php endif; ?>
         </div>
     </div>

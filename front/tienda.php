@@ -1,6 +1,9 @@
 <?php
 session_start();
 $user = isset($_SESSION["username"]) ? $_SESSION["username"] : null;
+
+// Definir la ruta base
+$base_url = '/landing_duki';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -158,10 +161,9 @@ body {
     </style>
     <div class="navbar" style="display: flex; align-items: center; justify-content: space-between;">
     <div style="display: flex; align-items: center;">
-        <img src="../assets/ameri.png" alt="Logo" class="navbar-logo">
+        <img src="<?php echo $base_url; ?>/assets/ameri.png" alt="Logo" class="navbar-logo">
         <div class="navbar-menu">
-            <a href="index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
-            <a href="index.html" class="navbar-link">INICIO</a>
+            <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
             <a href="#" class="navbar-link">PRODUCTOS</a>
             <a href="#" class="navbar-link">CONTACTO</a>
             <a href="#" class="navbar-link">CARRITO</a>
@@ -170,15 +172,15 @@ body {
     <div style="display: flex; align-items: center; gap: 1.2rem;">
         <?php if ($user): ?>
             <div style="color:#fff; font-weight:bold; font-size:1.1rem; display:flex; align-items:center; gap:0.7rem;">
-                <img src="/duki/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
+                <img src="<?php echo $base_url; ?>/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
                 <?php echo htmlspecialchars($user); ?>
             </div>
             <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="/duki/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
+                <a href="<?php echo $base_url; ?>/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
             <?php endif; ?>
-            <a href="/duki/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
+            <a href="<?php echo $base_url; ?>/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
         <?php else: ?>
-            <a href="../login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
+            <a href="<?php echo $base_url; ?>/login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
         <?php endif; ?>
     </div>
 </div>
@@ -188,11 +190,11 @@ body {
     require_once '../db.php';
     $prods = $conn->query("SELECT * FROM products ORDER BY id DESC");
     while($row = $prods->fetch_assoc()): ?>
-        <div class="product-card" onclick="window.location='producto_detalle.php?id=<?php echo $row['id']; ?>'" style="cursor:pointer;">
+        <div class="product-card" onclick="window.location='<?php echo $base_url; ?>/front/producto_detalle.php?id=<?php echo $row['id']; ?>'" style="cursor:pointer;">
             <?php if($row['image']): ?>
-                <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="product-img" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='producto_detalle.php?id=<?php echo $row['id']; ?>'">
+                <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="product-img" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='<?php echo $base_url; ?>/front/producto_detalle.php?id=<?php echo $row['id']; ?>'">
             <?php endif; ?>
-            <div class="product-name" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='producto_detalle.php?id=<?php echo $row['id']; ?>'">
+            <div class="product-name" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='<?php echo $base_url; ?>/front/producto_detalle.php?id=<?php echo $row['id']; ?>'">
                 <?php echo htmlspecialchars($row['name']); ?>
             </div>
             <?php if(isset($row['description'])): ?>

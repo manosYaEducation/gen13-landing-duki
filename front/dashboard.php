@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
         $img_name = uniqid('prod_') . '_' . basename($_FILES['image']['name']);
         $target = '../assets/tienda/' . $img_name;
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-            $image_url = '/duki/assets/tienda/' . $img_name;
+            $image_url = '/landing_duki/assets/tienda/' . $img_name;
         }
     }
     $stmt = $conn->prepare("INSERT INTO products (name, price, stock, image) VALUES (?, ?, ?, ?)");
