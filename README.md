@@ -99,9 +99,6 @@ El proyecto utiliza una base de datos MySQL con las siguientes tablas principale
 ### Panel de Administración
 - **Usuario:** admin@duki.com
 - **Contraseña:** admin123
-
-## 📞 Soporte
-
 <div align="center">
   Hecho con ❤️ para los fans de Duki | © 2025 Todos los derechos reservados
 </div>
