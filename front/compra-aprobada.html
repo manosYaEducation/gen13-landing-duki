@@ -3,80 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compra Aprobada</title>
+    <title>Compra Aprobada - Duki Shop</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <style>
-body {
-    background: #18181c;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Bebas Neue', Arial, sans-serif;
-}
-.result-box {
-    background: #18181c;
-    border-radius: 24px;
-    box-shadow: 0 0 60px 10px #6f0001cc, 0 0 16px #40020899;
-    padding: 2.5rem 2.5rem 2rem 2.5rem;
-    min-width: 340px;
-    max-width: 90vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2.5px solid #6f0001;
-    position: relative;
-}
-.result-icon {
-    font-size: 4rem;
-    color: #00ff99;
-    margin-bottom: 16px;
-    text-shadow: 0 0 24px #00ff99, 0 0 12px #6f0001;
-}
-.result-title {
-    color: #fff;
-    font-size: 2.1rem;
-    font-weight: bold;
-    text-shadow: 0 0 24px #6f0001, 2px 2px 0 #141418;
-    margin-bottom: 1rem;
-}
-.result-msg {
-    color: #c9cfd3;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-.result-btn {
-    background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.9rem 2.2rem;
-    font-size: 1.3rem;
-    font-family: 'Bebas Neue', Arial, sans-serif;
-    font-weight: bold;
-    letter-spacing: 2px;
-    box-shadow: 0 0 12px #6f0001cc;
-    cursor: pointer;
-    text-shadow: 0 0 8px #fff, 0 0 6px #6f0001;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    display: inline-block;
-}
-.result-btn:hover {
-    background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
-    color: #fff;
-    box-shadow: 0 0 24px #6f0001;
-}
-</style>
-<div class="result-box">
-    <div class="result-icon">✔️</div>
-    <div class="result-title">¡Compra aprobada!</div>
-    <div class="result-msg">Gracias por tu compra.<br>Recibirás un correo con los detalles y el envío de tu pedido.</div>
-    <a href="tienda.html" class="result-btn">Volver a la tienda</a>
-</div>
+        body {
+            background: #18181c;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .result-box {
+            background: linear-gradient(145deg, #1f1f23 0%, #23232a 100%);
+            border-radius: 24px;
+            box-shadow: 0 0 60px 10px #6f0001cc, 0 0 16px #40020899;
+            padding: 3rem;
+            min-width: 340px;
+            max-width: 90vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2.5px solid #6f0001;
+            position: relative;
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .result-icon {
+            font-size: 5rem;
+            color: #00ff99;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 24px #00ff99, 0 0 12px #6f0001;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .result-title {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 24px #6f0001, 2px 2px 0 #141418;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .result-msg {
+            color: #c9cfd3;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .result-btn {
+            background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2.5rem;
+            font-size: 1.4rem;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 0 16px #6f0001cc;
+            cursor: pointer;
+            text-shadow: 0 0 8px #fff, 0 0 6px #6f0001;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .result-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        .result-btn:hover::before {
+            left: 100%;
+        }
+        .result-btn:hover {
+            background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 0 32px #6f0001;
+        }
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #00ff99;
+            opacity: 0.7;
+            animation: confetti-fall 3s linear infinite;
+        }
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+    <div class="result-box">
+        <div class="result-icon">✔️</div>
+        <div class="result-title">¡Compra Aprobada!</div>
+        <div class="result-msg">
+            Gracias por tu compra.<br>
+            Recibirás un correo con los detalles y el envío de tu pedido.<br>
+            ¡Esperamos que disfrutes tus productos!
+        </div>
+        <a href="tienda.php" class="result-btn">Volver a la tienda</a>
+    </div>
+
+    <script>
+        // Crear confeti
+        function createConfetti() {
+            const colors = ['#00ff99', '#6f0001', '#fff', '#e0b800'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                document.body.appendChild(confetti);
+            }
+        }
+        createConfetti();
+    </script>
 </body>
 </html>
