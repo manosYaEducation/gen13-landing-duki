@@ -4,6 +4,16 @@
     box-sizing: border-box;
 }
 
+body {
+    opacity: 0;
+    animation: fadeIn 1.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .navbar-shop {
     display: flex;
     align-items: center;
@@ -40,6 +50,9 @@ body {
     font-family: 'Anton', sans-serif;
     color: #ffffff;
     min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
 
@@ -96,8 +109,52 @@ body {
 
 .timeline-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 2rem 0 2rem;
     padding: 2rem;
+    transition: all 0.3s ease-in-out;
+    flex-grow: 1;
+    width: calc(100% - 400px);
+}
+
+/* Cuando la sección de hits está oculta */
+.hits-section.hidden + .timeline-container {
+    margin-left: 2rem !important;
+    width: calc(100% - 4rem) !important; /* Ajustado para dejar margen */
+    max-width: 100% !important;
+    transition: all 0.3s ease-in-out !important;
+}
+
+/* Estilos para pantallas más pequeñas */
+@media (max-width: 1200px) {
+    .hits-section:not(.hidden) + .timeline-container {
+        width: calc(100% - 400px) !important;
+    }
+    
+    .hits-section.hidden + .timeline-container {
+        width: calc(100% - 4rem) !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .hits-section:not(.hidden) {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        border-radius: 0;
+        max-height: none;
+    }
+    
+    .hits-section:not(.hidden) + .timeline-container {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 1rem;
+    }
+    
+    .hits-section.hidden + .timeline-container {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 1rem;
+    }
 }
 
 .timeline {
@@ -442,24 +499,75 @@ body {
 }
 
 .hits-section {
-    background: rgba(20, 20, 25, 0.8);
-    border-radius: 20px;
-    padding: 2rem;
-    margin: 2rem 0 2rem 2rem;
-    width: 380px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
-    backdrop-filter: blur(12px);
+    width: 300px;
+    min-width: 300px; /* Asegura que mantenga un ancho mínimo */
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 2rem 1rem 2rem 2rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 800px;
-    justify-content: flex-start;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    position: sticky;
+    top: 2rem;
+    transition: all 0.3s ease-in-out;
+    z-index: 10;
+    will-change: transform, opacity; /* Mejora el rendimiento de la animación */
 }
 
-.hits-section:hover {
-    transform: translateY(-5px);
+.hits-section.hidden {
+    transform: translateX(-400px) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    left: -100%;
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.hits-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.toggle-hits-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-hits-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.toggle-hits-btn i {
+    transition: transform 0.3s ease;
+}
+
+.hits-section.hidden .toggle-hits-btn i {
+    transform: rotate(180deg);
+}
+
+.hits-section.hidden + .timeline-container {
+    margin-left: 2rem;
     box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
 }
 
@@ -541,11 +649,28 @@ body {
 
 .hits-title {
     color: #ffffff;
-    font-size: 1.18rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 1rem;
-    text-align: left;
+    margin: 2rem 0;
+    text-align: center;
     font-family: 'Anton', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    padding: 0 20px;
+}
+
+.hits-title:before,
+.hits-title:after {
+    content: '𓆰';
+    font-size: 1.2em;
+    opacity: 0.8;
+}
+
+.hits-title:after {
+    content: '𓆪';
 }
 
 .hits-list-scroll {

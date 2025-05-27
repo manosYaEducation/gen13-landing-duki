@@ -128,11 +128,14 @@ if (!$prod) {
         <div style="display: flex; align-items: center;">
             <img src="<?php echo $base_url; ?>/assets/ameri.png" alt="Logo" class="navbar-logo">
             <div class="navbar-menu">
-                <a href="<?php echo $base_url; ?>/front/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
-                <a href="<?php echo $base_url; ?>/front/index.html" class="navbar-link">INICIO</a>
+                <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
+                <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">INICIO</a>
                 <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
                 <a href="#" class="navbar-link">CONTACTO</a>
-                <a href="#" class="navbar-link">CARRITO</a>
+                <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link" style="position: relative;">
+                    CARRITO
+                    <span id="carrito-contador" style="background: #e03838; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; top: -8px; right: -8px;">0</span>
+                </a>
             </div>
         </div>
         <div style="display: flex; align-items: center; gap: 1.2rem;">
@@ -162,10 +165,36 @@ if (!$prod) {
                 <?php echo !empty($prod['description']) ? htmlspecialchars($prod['description']) : 'Sin descripción.'; ?>
             </div>
             <div class="detalle-btns">
-                <button class="detalle-btn">Agregar al carrito</button>
-                <button class="detalle-btn" style="background:#23232a; color:#e0b800; border:2px solid #e0b800;">Comprar ahora</button>
+                <button class="detalle-btn" id="btn-agregar-carrito">Agregar al carrito</button>
+                <button class="detalle-btn" id="btn-comprar-ahora" style="background:#23232a; color:#e0b800; border:2px solid #e0b800;">Comprar ahora</button>
             </div>
         </div>
     </div>
+    <script src="carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Datos del producto actual
+            const productoId = <?php echo $prod['id']; ?>;
+            const productoNombre = "<?php echo addslashes(htmlspecialchars($prod['name'])); ?>";
+            const productoPrecio = <?php echo $prod['price']; ?>;
+            const productoImagen = "<?php echo addslashes(htmlspecialchars($prod['image'])); ?>";
+            
+            // Botón agregar al carrito
+            document.getElementById('btn-agregar-carrito').addEventListener('click', () => {
+                agregarAlCarrito(productoId, productoNombre, productoPrecio, productoImagen);
+            });
+            
+            // Botón comprar ahora
+            document.getElementById('btn-comprar-ahora').addEventListener('click', () => {
+                // Primero agregamos al carrito
+                agregarAlCarrito(productoId, productoNombre, productoPrecio, productoImagen);
+                // Luego redirigimos al carrito
+                window.location.href = '<?php echo $base_url; ?>/front/carrito.php';
+            });
+            
+            // Inicializar contador de carrito
+            actualizarContadorCarrito();
+        });
+    </script>
 </body>
 </html>
