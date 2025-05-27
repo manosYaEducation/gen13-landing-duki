@@ -1,101 +1,74 @@
 <?php
 header('Content-Type: application/json');
+
+// Habilitar reporte de errores
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once '../db.php';
 
-// Obtener los datos del POST
+// Verificar si hay datos POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    die(json_encode(['success' => false, 'message' => 'Método no permitido']));
+}
+
+// Obtener y validar los datos JSON
 $json = file_get_contents('php://input');
 $data = json_decode($json, true);
 
-// Validar los datos
-if (!isset($data['order_id'])) {
+if (json_last_error() !== JSON_ERROR_NONE) {
+    http_response_code(400);
+    die(json_encode([
+        'success' => false,
+        'message' => 'JSON inválido: ' . json_last_error_msg()
+    ]));
+}
+
+if (!isset($data['order_id']) || !isset($data['status'])) {
+    http_response_code(400);
+    die(json_encode([
+        'success' => false,
+        'message' => 'Faltan datos requeridos',
+        'data_received' => $data
+    ]));
+}
+
+$order_id = intval($data['order_id']);
+$status = in_array($data['status'], ['approved', 'rejected']) ? $data['status'] : null;
+
+if (!$order_id || !$status) {
+    http_response_code(400);
+    die(json_encode([
+        'success' => false,
+        'message' => 'Datos inválidos',
+        'order_id' => $order_id,
+        'status' => $status
+    ]));
+}
+
+try {
+    // Actualizar el estado de la orden
+    $new_status = ($status === 'approved') ? 'completed' : 'rejected';
+    
+    // Usar solo la columna status que sabemos que existe
+    $stmt = $conn->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt->bind_param('si', $new_status, $order_id);
+    $result = $stmt->execute();
+    
+    if ($result) {
+        echo json_encode([
+            'success' => true,
+            'message' => $status === 'approved' ? 'Pago aprobado' : 'Pago rechazado'
+        ]);
+    } else {
+        throw new Exception('Error al actualizar la orden: ' . $conn->error);
+    }
+    
+} catch (Exception $e) {
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'ID de orden requerido'
+        'message' => 'Error en el servidor: ' . $e->getMessage()
     ]);
-    exit;
 }
-
-// Obtener información de la orden
-$orderId = intval($data['order_id']);
-$order = $conn->query("SELECT o.*, 
-    (SELECT SUM(p.price * od.quantity) 
-     FROM order_details od 
-     JOIN products p ON od.product_id = p.id 
-     WHERE od.order_id = o.id) as total 
-    FROM orders o 
-    WHERE o.id = $orderId")->fetch_assoc();
-
-if (!$order) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Orden no encontrada'
-    ]);
-    exit;
-}
-
-// Configurar la petición a Surpay
-$baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
-$callbackUrl = $baseUrl . '/api/surpay_callback.php';
-$redirectUrl = $baseUrl . '/front/ver_boleta.php?order_id=' . $orderId;
-
-// Datos para Surpay
-$surpayData = [
-    'idcliente' => 'DUKI_SHOP_' . $orderId, // Identificador único del cliente
-    'monto' => $order['total'],
-    'issue' => 'Orden #' . $orderId,
-    'transaction_id' => 'TX_' . time() . '_' . $orderId,
-    'status_url' => $callbackUrl,
-    'redirect_url' => $redirectUrl
-];
-
-// En producción, usar la URL real de Surpay
-$surpayUrl = 'https://link-generator.surpay.cl/surpay';
-
-// Para desarrollo/pruebas, usar el mock
-if ($_SERVER['HTTP_HOST'] === 'localhost' || $_SERVER['HTTP_HOST'] === '127.0.0.1') {
-    $surpayUrl = $baseUrl . '/api/mock_surpay.php';
-}
-
-// Realizar la petición a Surpay
-$ch = curl_init($surpayUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($surpayData));
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json'
-]);
-
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
-
-if ($httpCode !== 200) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Error al comunicarse con Surpay'
-    ]);
-    exit;
-}
-
-// Decodificar la respuesta de Surpay
-$surpayResponse = json_decode($response, true);
-
-if (!$surpayResponse || !isset($surpayResponse['url_pago'])) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Respuesta inválida de Surpay'
-    ]);
-    exit;
-}
-
-// Guardar la información de la transacción
-$conn->query("UPDATE orders SET 
-    transaction_id = '{$surpayData['transaction_id']}',
-    payment_status = 'pending'
-    WHERE id = $orderId");
-
-// Devolver la URL de pago
-echo json_encode([
-    'success' => true,
-    'url_pago' => $surpayResponse['url_pago']
-]);

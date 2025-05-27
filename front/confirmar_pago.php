@@ -25,7 +25,7 @@ if (!$order) {
 }
 
 // Obtener los detalles de los productos
-$details = $conn->query("SELECT od.*, p.name, p.price, p.image_url 
+$details = $conn->query("SELECT od.*, p.name, p.price 
     FROM order_details od 
     JOIN products p ON od.product_id = p.id 
     WHERE od.order_id = $order_id");
@@ -262,43 +262,76 @@ while ($item = $details->fetch_assoc()) {
         </div>
     </div>
 
-    <div class="payment-container">
-        <div class="payment-header">
-            <h1>Confirmar Pago</h1>
-            <p>Orden #<?php echo $order_id; ?></p>
-        </div>
-        
-        <div class="payment-details">
-            <h3>Detalles del Pedido</h3>
-            <?php
-            $details = $conn->query("SELECT od.*, p.name, p.price 
-                FROM order_details od 
-                JOIN products p ON od.product_id = p.id 
-                WHERE od.order_id = $order_id");
-            
-            while ($item = $details->fetch_assoc()) {
-                echo "<div style='margin: 10px 0;'>";
-                echo "<strong>{$item['name']}</strong> x {$item['quantity']}";
-                echo "<span style='float: right'>$" . number_format($item['price'] * $item['quantity'], 0, ',', '.') . "</span>";
-                echo "</div>";
-            }
-            ?>
-        </div>
+    <div class="container">
+        <div class="card">
+            <div class="order-header">
+                <h1 class="order-title">Confirmar Pago</h1>
+                <p class="order-subtitle">Orden #<?php echo $order_id; ?></p>
+            </div>
 
-        <div class="payment-total">
-            <strong>Total a Pagar:</strong> $<?php echo number_format($order['total'], 0, ',', '.'); ?>
-        </div>
+            <div class="order-summary">
+                <div class="summary-item">
+                    <div class="summary-label">Productos</div>
+                    <div class="summary-value"><?php echo $order['num_items']; ?></div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Total</div>
+                    <div class="summary-value">$<?php echo number_format($order['total'], 0, ',', '.'); ?></div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Estado</div>
+                    <div class="summary-value">Pendiente</div>
+                </div>
+            </div>
 
-        <div class="payment-actions">
-            <button class="btn-approve" onclick="procesarPago('approved')">Aprobar Pago</button>
-            <button class="btn-reject" onclick="procesarPago('rejected')">Rechazar Pago</button>
+            <div class="products-list">
+                <h3>Detalle de Productos</h3>
+                <?php foreach ($items as $item): ?>
+                    <div class="product-item">
+                        <div class="product-info">
+                            <div class="product-name"><?php echo htmlspecialchars($item['name']); ?></div>
+                            <div class="product-price">$<?php echo number_format($item['price'], 0, ',', '.'); ?></div>
+                        </div>
+                        <div class="product-quantity">x<?php echo $item['quantity']; ?></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="total-section">
+                <div class="total-amount">
+                    Total a Pagar: $<?php echo number_format($order['total'], 0, ',', '.'); ?>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-approve" onclick="procesarPago('approved')">
+                    Aprobar Pago
+                </button>
+                <button class="btn btn-reject" onclick="procesarPago('rejected')">
+                    Rechazar Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Procesando pago...</p>
         </div>
     </div>
 
     <script>
         async function procesarPago(status) {
+            const loading = document.getElementById('loading');
+            const buttons = document.querySelectorAll('.btn');
+            
             try {
-                const response = await fetch('../api/procesar_pago.php', {
+                // Deshabilitar botones y mostrar loading
+                buttons.forEach(btn => btn.disabled = true);
+                loading.style.display = 'flex';
+
+                const response = await fetch('procesar_pago.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -309,19 +342,41 @@ while ($item = $details->fetch_assoc()) {
                     })
                 });
 
+
+                // Verificar si la respuesta es JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    const text = await response.text();
+                    console.error('Respuesta no es JSON:', text);
+                    throw new Error('La respuesta del servidor no es válida');
+                }
+
+
                 const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.message || `Error HTTP: ${response.status}`);
+                }
                 
                 if (data.success) {
                     // Limpiar el carrito
                     localStorage.removeItem('carritoDuki');
-                    // Redirigir a la página de la boleta
-                    window.location.href = 'ver_boleta.php?order_id=<?php echo $order_id; ?>';
+                    // Redirigir según el estado del pago
+                    if (status === 'approved') {
+                        window.location.href = 'compra-aprobada.html';
+                    } else {
+                        window.location.href = 'compra-rechazada.html';
+                    }
                 } else {
-                    alert(data.message || 'Error al procesar el pago');
+                    throw new Error(data.message || 'Error al procesar el pago');
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error al procesar el pago');
+                alert('Error: ' + (error.message || 'Error al procesar el pago'));
+                
+                // Rehabilitar botones y ocultar loading
+                buttons.forEach(btn => btn.disabled = false);
+                loading.style.display = 'none';
             }
         }
     </script>
