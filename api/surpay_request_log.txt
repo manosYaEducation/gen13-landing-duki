@@ -1,0 +1,92 @@
+2025-05-27 16:54:07 - {"idcliente":"123","monto":"10000","issue":"VISA","transaction_id":"TX-1748357647846","status_url":"http:\/\/localhost:8000\/back\/api\/surpay_callback.php"}
+2025-05-27 16:54:11 - {"idcliente":"12345","monto":"10000","issue":"VISA","transaction_id":"TX-1748357651712","status_url":"http:\/\/localhost:8000\/back\/api\/surpay_callback.php"}
+2025-05-27 17:02:39 - {"idcliente":"1","monto":400000,"issue":"VENTA-1748358159774","transaction_id":"TX-1748358159774-bwkliu8ok","status_url":"http:\/\/localhost\/back\/api\/surpay_callback.php"}
+2025-05-27 17:05:51 - {"idcliente":"1","monto":400000,"issue":"VENTA-1748358351073","transaction_id":"TX-1748358351073-1bm5lwq9e","status_url":"http:\/\/localhost\/back\/api\/surpay_callback.php","redirect_url":"http:\/\/localhost\/front\/html\/estado_pago.html"}
+2025-05-27 17:05:51 - {"idcliente":"1","monto":400000,"issue":"VENTA-1748358351073","transaction_id":"TX-1748358351073-cppl3m3p0","status_url":"http:\/\/localhost\/back\/api\/surpay_callback.php","redirect_url":"http:\/\/localhost\/front\/html\/estado_pago.html"}
+2025-05-27 17:20:30 - {"idcliente":"1","monto":400000,"issue":"VENTA-1748359230749","transaction_id":"TX-1748359230749-hjp7zf6jt","status_url":"http:\/\/localhost\/back\/api\/surpay_callback.php","redirect_url":"http:\/\/localhost\/front\/html\/datos.html?status={status}&transaction_id=TX-1748359230749-hjp7zf6jt&amount=400000&payment_method=Tarjeta&payment_date=2025-05-27T15:20:30.749Z"}
+2025-05-27 17:23:38 - {"idcliente":"1","monto":400000,"issue":"VENTA-1748359418626","transaction_id":"TX-1748359418626-5oiakh4ha","status_url":"http:\/\/localhost:8000\/back\/api\/surpay_callback.php","redirect_url":"http:\/\/localhost:8000\/validar_pago?order_id=TX-1748359418626-5oiakh4ha"}
+2025-05-27 17:23:38 - {"idcliente":"1","monto":400000,"issue":"VENTA-1748359418626","transaction_id":"TX-1748359418626-z2kt3l094","status_url":"http:\/\/localhost:8000\/back\/api\/surpay_callback.php","redirect_url":"http:\/\/localhost:8000\/validar_pago?order_id=TX-1748359418626-z2kt3l094"}
+2025-05-27 22:52:46
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_19",
+    "monto": 25000,
+    "issue": "Orden #19",
+    "transaction_id": "TX_1748379166_19",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=19",
+    "metodo_pago": "Transferencia"
+}
+
+2025-05-27 22:52:49
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_20",
+    "monto": 25000,
+    "issue": "Orden #20",
+    "transaction_id": "TX_1748379169_20",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=20",
+    "metodo_pago": "Transferencia"
+}
+
+2025-05-27 22:52:54
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_21",
+    "monto": 25000,
+    "issue": "Orden #21",
+    "transaction_id": "TX_1748379174_21",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=21",
+    "metodo_pago": "Transferencia"
+}
+
+2025-05-27 22:56:17
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_22",
+    "monto": 25000,
+    "issue": "Orden #22",
+    "transaction_id": "TX_1748379377_22",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=22",
+    "metodo_pago": "Transferencia"
+}
+
+2025-05-27 22:56:27
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_23",
+    "monto": 6000,
+    "issue": "Orden #23",
+    "transaction_id": "TX_1748379387_23",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=23",
+    "metodo_pago": "Transferencia"
+}
+
+2025-05-27 22:56:32
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_24",
+    "monto": 6000,
+    "issue": "Orden #24",
+    "transaction_id": "TX_1748379392_24",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=24",
+    "metodo_pago": "Transferencia"
+}
+
+2025-05-27 23:04:30
+URL: http://localhost/api/mock_surpay.php
+{
+    "idcliente": "DUKI_SHOP_25",
+    "monto": 25000,
+    "issue": "Orden #25",
+    "transaction_id": "TX_1748379870_25",
+    "status_url": "http:\/\/localhost\/api\/surpay_callback.php",
+    "redirect_url": "http:\/\/localhost\/front\/ver_boleta.php?order_id=25",
+    "metodo_pago": "Transferencia"
+}
+

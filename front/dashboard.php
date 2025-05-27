@@ -151,7 +151,12 @@ body {
             </div>
             <div class="summary-item">
                 <div class="summary-label">Pedidos</div>
-                <div class="summary-value">-</div>
+                <div class="summary-value">
+                    <?php 
+                    $pcount = $conn->query("SELECT COUNT(*) as total FROM orders")->fetch_assoc()['total'];
+                    echo $pcount;
+                    ?>
+                </div>
             </div>
             <div class="summary-item">
                 <div class="summary-label">Usuarios</div>
@@ -182,7 +187,7 @@ body {
             </thead>
             <tbody>
                 <?php 
-                $prods = $conn->query("SELECT * FROM products ORDER BY id DESC LIMIT 10");
+                $prods = $conn->query("SELECT * FROM products ORDER BY id DESC ");
                 while($row = $prods->fetch_assoc()): ?>
                 <tr style="background:#23232a; min-height:80px; height:80px;">
                     <td style="padding:12px 8px; text-align:center; vertical-align:middle; font-size:1.08rem; font-family:'Bebas Neue',Arial,sans-serif;"> <?php echo $row['id']; ?> </td>
@@ -207,6 +212,71 @@ body {
 <a href="admin_products.php?delete=<?php echo $row['id']; ?>" title="Eliminar" style="display:inline-block; vertical-align:middle;">
     <img src="../assets/icons/trash-x.png" alt="Eliminar" style="width:28px; height:28px; object-fit:contain; filter:drop-shadow(0 0 2px #e03838); cursor:pointer;">
 </a>
+                    </td>
+                </tr>
+                <?php endwhile; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sección de Pedidos -->
+    <div style="background: #fff2; border-radius: 16px; padding: 2rem; box-shadow: 0 0 24px rgba(207, 198, 198, 0.8); margin-top: 2rem;">
+        <div style="font-size:1.3rem;font-weight:bold;color:#fff;letter-spacing:1.5px;margin-bottom:1.2rem;">Gestión de Pedidos</div>
+        <table style="width:100%; border-collapse:collapse; background:#fff1; color:#fff; border-radius:12px; overflow:hidden;">
+            <thead>
+                <tr style="background:#1a1012; color:#fff;">
+                    <th style="padding:10px 8px;">ID</th>
+                    <th style="padding:10px 8px;">Fecha</th>
+                    <th style="padding:10px 8px;">Estado</th>
+                    <th style="padding:10px 8px;">Total</th>
+                    <th style="padding:10px 8px;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                $orders = $conn->query("SELECT o.*, 
+                    (SELECT SUM(p.price * od.quantity) 
+                     FROM order_details od 
+                     JOIN products p ON od.product_id = p.id 
+                     WHERE od.order_id = o.id) as total 
+                    FROM orders o 
+                    ORDER BY o.fecha DESC");
+                while($order = $orders->fetch_assoc()): 
+                    $statusClass = '';
+                    switch($order['status']) {
+                        case 'pendiente':
+                            $statusClass = 'background: #e0b800; color: #000';
+                            break;
+                        case 'aprobado':
+                            $statusClass = 'background: #1fa700; color: #fff';
+                            break;
+                        case 'rechazado':
+                            $statusClass = 'background: #6f0001; color: #fff';
+                            break;
+                    }
+                ?>
+                <tr style="background:#23232a;">
+                    <td style="padding:12px 8px; text-align:center;"><?php echo $order['id']; ?></td>
+                    <td style="padding:12px 8px; text-align:center;"><?php echo date('d/m/Y H:i', strtotime($order['fecha'])); ?></td>
+                    <td style="padding:12px 8px; text-align:center;">
+                        <span style="padding: 4px 12px; border-radius: 20px; <?php echo $statusClass; ?>">
+                            <?php echo ucfirst($order['status']); ?>
+                        </span>
+                    </td>
+                    <td style="padding:12px 8px; text-align:center; color:#e0b800;">$<?php echo number_format($order['total'], 0, ',', '.'); ?></td>
+                    <td style="padding:12px 8px; text-align:center;">
+                        <?php if($order['status'] === 'pendiente'): ?>
+                            <button onclick="aprobarPedido(<?php echo $order['id']; ?>)" 
+                                    style="background: #1fa700; color: white; border: none; padding: 6px 12px; border-radius: 4px; margin-right: 5px; cursor: pointer;">
+                                Aprobar
+                            </button>
+                            <button onclick="rechazarPedido(<?php echo $order['id']; ?>)" 
+                                    style="background: #6f0001; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                                Rechazar
+                            </button>
+                        <?php else: ?>
+                            <span style="color: #666;">Procesado</span>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endwhile; ?>

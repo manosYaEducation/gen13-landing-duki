@@ -317,7 +317,7 @@ $base_url = '/landing_duki';
         
         <div class="carrito-acciones">
             <a href="<?php echo $base_url; ?>/front/tienda.php" class="btn-seguir-comprando">SEGUIR COMPRANDO</a>
-            <button class="btn-finalizar-compra" id="btn-finalizar-compra">FINALIZAR COMPRA</button>
+            <button onclick="finalizarCompra()" class="btn-finalizar-compra">FINALIZAR COMPRA</button>
         </div>
 
         <div class="metodos-pago" id="metodos-pago">
@@ -333,105 +333,146 @@ $base_url = '/landing_duki';
         </div>
     </div>
 
-    <!-- Formulario para crear pedido -->
-    <form id="form-pedido" method="POST" action="crear_pedido.php" style="display:none;">
-        <input type="hidden" name="carrito" id="carrito-input">
-        <input type="hidden" name="wa_url" id="wa-url-input">
-    </form>
+    <!-- Overlay de carga -->
+    <div id="loading-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999;">
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; text-align: center;">
+            <div class="loader" style="border: 5px solid #f3f3f3; border-top: 5px solid #6f0001; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <div>Procesando pedido...</div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-finalizar-compra:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+    </style>
 
     <script src="carrito.js"></script>
     <script>
+        // Función para seleccionar método de pago
+        function seleccionarMetodo(metodo) {
+            document.getElementById('metodo-pago').value = metodo;
+            document.querySelectorAll('.metodo-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('btn-' + metodo.toLowerCase()).classList.add('selected');
+        }
+
+        // Crear orden y redirigir a la boleta
+        async function finalizarCompra() {
+            const btnFinalizar = document.getElementById('btn-finalizar-compra');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            
+            try {
+                const carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
+                
+                if (carrito.length === 0) {
+                    alert('El carrito está vacío');
+                    return;
+                }
+                
+                // Deshabilitar botón y mostrar overlay
+                if (btnFinalizar) btnFinalizar.disabled = true;
+                if (loadingOverlay) loadingOverlay.style.display = 'block';
+                
+                // Crear la orden
+                const response = await fetch('crear_pedido.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        carrito: carrito
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.message || 'Error al crear la orden');
+                }
+
+                // Redirigir a la página de confirmación de pago
+                window.location.href = `confirmar_pago.php?order_id=${data.order_id}&total=${data.total}`;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert(error.message || 'Error al procesar la solicitud');
+            } finally {
+                // Rehabilitar botón y ocultar overlay
+                if (btnFinalizar) btnFinalizar.disabled = false;
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+            }
+        }
+        
         // Renderizar el carrito
         function renderizarCarrito() {
             const carritoItems = document.getElementById('carrito-items');
             const carritoTotalValor = document.getElementById('carrito-total-valor');
+            const carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
+            const btnFinalizar = document.getElementById('btn-finalizar-compra');
+            const metodosPago = document.getElementById('metodos-pago');
             
             if (carrito.length === 0) {
                 carritoItems.innerHTML = '<div class="carrito-vacio">No hay productos en tu carrito</div>';
                 carritoTotalValor.textContent = '$0';
-                document.getElementById('btn-finalizar-compra').style.display = 'none';
+                if (btnFinalizar) btnFinalizar.style.display = 'none';
+                if (metodosPago) metodosPago.style.display = 'none';
                 return;
             }
             
-            document.getElementById('btn-finalizar-compra').style.display = 'block';
+            if (btnFinalizar) btnFinalizar.style.display = 'block';
+            if (metodosPago) metodosPago.style.display = 'block';
             carritoItems.innerHTML = '';
             
+            let total = 0;
             carrito.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                
                 const itemHtml = `
                     <div class="carrito-item">
                         <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-img">
                         <div class="carrito-item-info">
                             <div class="carrito-item-nombre">${item.nombre}</div>
                             <div class="carrito-item-precio">$${item.precio.toLocaleString('es-CL')}</div>
+                            <div class="carrito-item-subtotal" style="color: #e0b800; margin-top: 0.5rem;">Subtotal: $${subtotal.toLocaleString('es-CL')}</div>
                         </div>
                         <div class="carrito-item-acciones">
                             <div class="cantidad-control">
                                 <button class="btn-cantidad" onclick="actualizarCantidad(${item.id}, ${item.cantidad - 1})">-</button>
-                                <div class="cantidad-valor">${item.cantidad}</div>
+                                <span class="cantidad-valor">${item.cantidad}</span>
                                 <button class="btn-cantidad" onclick="actualizarCantidad(${item.id}, ${item.cantidad + 1})">+</button>
                             </div>
-                            <button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})">ELIMINAR</button>
+                            <button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})">Eliminar</button>
                         </div>
                     </div>
                 `;
                 carritoItems.innerHTML += itemHtml;
             });
-            
-            const total = calcularTotal();
-            carritoTotalValor.textContent = '$' + total.toLocaleString('es-CL');
-        }
 
-        // Seleccionar método de pago
-        function seleccionarMetodo(metodo) {
-            document.getElementById('metodo-pago').value = metodo;
-            document.getElementById('btn-transferencia').classList.remove('selected');
-            document.getElementById('btn-efectivo').classList.remove('selected');
-            if (metodo === 'Transferencia') {
-                document.getElementById('btn-transferencia').classList.add('selected');
-            } else {
-                document.getElementById('btn-efectivo').classList.add('selected');
-            }
+            // Actualizar el total
+            carritoTotalValor.textContent = '$' + total.toLocaleString('es-CL');
         }
 
         // Cuando se carga la página
         document.addEventListener('DOMContentLoaded', () => {
+            carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
             renderizarCarrito();
             
             // Botón para finalizar compra
-            document.getElementById('btn-finalizar-compra').addEventListener('click', () => {
-                if (carrito.length > 0) {
-                    document.getElementById('metodos-pago').style.display = 'block';
-                    document.getElementById('btn-finalizar-compra').style.display = 'none';
-                }
-            });
-            
-            // Botón para pagar por WhatsApp
-            document.getElementById('btn-pagar-whatsapp').addEventListener('click', () => {
-                if (carrito.length > 0) {
-                    const metodo = document.getElementById('metodo-pago').value;
-                    const carritoEnviar = carrito.map(item => ({
-                        id_producto: item.id,
-                        cantidad: item.cantidad
-                    }));
-                    
-                    let mensaje = '¡Hola! Quiero comprar los siguientes productos:%0A';
-                    carrito.forEach(item => {
-                        mensaje += `- ${item.nombre} x${item.cantidad} ($${(item.precio * item.cantidad).toLocaleString('es-CL')})%0A`;
-                    });
-                    
-                    const total = calcularTotal();
-                    mensaje += `Total: $${total.toLocaleString('es-CL')}%0A`;
-                    mensaje += `Método de pago: ${metodo}`;
-                    
-                    const numero = '56978836941'; // Número de WhatsApp (cambiar por el correcto)
-                    const waUrl = `https://wa.me/${numero}?text=${mensaje}`;
-                    
-                    // Enviar pedido al backend antes de abrir WhatsApp
-                    document.getElementById('carrito-input').value = JSON.stringify(carritoEnviar);
-                    document.getElementById('wa-url-input').value = waUrl;
-                    document.getElementById('form-pedido').submit();
-                }
-            });
+            const btnFinalizar = document.getElementById('btn-finalizar-compra');
+            if (btnFinalizar) {
+                btnFinalizar.addEventListener('click', finalizarCompra);
+            }
+
+            // Inicializar método de pago por defecto
+            seleccionarMetodo('Transferencia');
         });
     </script>
 </body>

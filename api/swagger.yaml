@@ -1,0 +1,718 @@
+openapi: 3.0.0
+info:
+  title: API de Servicios, Pagos y Agendamiento
+  description: |
+    API para el módulo de servicios, procesamiento de pagos y agendamiento.
+    Incluye integración con la pasarela de pago Surpay.
+  version: 1.0.0
+  contact:
+    name: Soporte Técnico
+    email: soporte@ejemplo.com
+
+servers:
+  - url: http://localhost
+    description: Servidor de desarrollo
+  - url: https://api.ejemplo.com
+    description: Servidor de producción
+
+paths:
+  /agendar:
+    post:
+      summary: Crear nueva reserva
+      description: Crea una nueva reserva o agendamiento en el sistema
+      operationId: crearReserva
+      tags:
+        - Agendamiento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservaRequest'
+      responses:
+        '201':
+          description: Reserva creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReservaResponse'
+        '400':
+          description: Datos incompletos o inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflicto - La fecha/hora ya está reservada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /disponibilidad:
+    get:
+      summary: Consultar disponibilidad
+      description: Consulta qué fechas y horas están disponibles para reservar
+      operationId: consultarDisponibilidad
+      tags:
+        - Agendamiento
+      parameters:
+        - name: fecha_inicio
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha de inicio para consultar disponibilidad
+        - name: fecha_fin
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+          description: Fecha de fin para consultar disponibilidad
+      responses:
+        '200':
+          description: Disponibilidad obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisponibilidadResponse'
+        '400':
+          description: Parámetros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /pagar-reserva:
+    post:
+      summary: Pagar reserva
+      description: Inicia el proceso de pago asociado a una reserva
+      operationId: pagarReserva
+      tags:
+        - Agendamiento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagoReservaRequest'
+      responses:
+        '200':
+          description: Pago iniciado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagoReservaResponse'
+        '400':
+          description: Datos incompletos o inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Reserva no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /estado-pago:
+    get:
+      summary: Consultar estado de pago
+      description: Consulta el estado del pago de una reserva
+      operationId: consultarEstadoPago
+      tags:
+        - Agendamiento
+      parameters:
+        - name: reserva_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: ID de la reserva
+      responses:
+        '200':
+          description: Estado de pago obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstadoPagoResponse'
+        '400':
+          description: ID de reserva inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Reserva no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /surpay:
+    post:
+      summary: Iniciar pago con Surpay
+      description: |
+        Inicia un pago con comisión y genera una URL de pago propia protegida.
+        Este endpoint es parte de la API de Surpay.
+      operationId: iniciarPagoSurpay
+      tags:
+        - Surpay
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurpayRequest'
+      responses:
+        '200':
+          description: Pago iniciado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurpayResponse'
+        '400':
+          description: Datos incompletos o inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /redirigir/{transaction_id}:
+    get:
+      summary: Redirigir a URL de pago
+      description: |
+        Redirige al usuario hacia la URL real del proveedor de pago.
+        Este endpoint es parte de la API de Surpay.
+      operationId: redirigirPago
+      tags:
+        - Surpay
+      parameters:
+        - name: transaction_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: ID único de la transacción
+      responses:
+        '302':
+          description: Redirección exitosa a la URL del proveedor
+        '404':
+          description: No se encontró el registro de la transacción
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/procesar_pago.php:
+    post:
+      summary: Procesa un pago a través de Surpay
+      description: Endpoint para procesar pagos utilizando la pasarela de pago Surpay
+      operationId: procesarPago
+      tags:
+        - Pagos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagoRequest'
+      responses:
+        '200':
+          description: Pago procesado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagoResponse'
+        '400':
+          description: Datos incompletos o inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Error del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - ApiKeyAuth: []
+
+  /api/servicios/{categoria}:
+    get:
+      summary: Obtiene servicios por categoría
+      description: Retorna la lista de servicios disponibles para una categoría específica
+      operationId: obtenerServicios
+      tags:
+        - Servicios
+      parameters:
+        - name: categoria
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [diseno, marketing, automatizacion, tecnologia, formacion]
+          description: Categoría de servicios a consultar
+      responses:
+        '200':
+          description: Lista de servicios obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servicio'
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/horarios/{fecha}:
+    get:
+      summary: Obtiene horarios disponibles
+      description: Retorna los horarios disponibles para una fecha específica
+      operationId: obtenerHorarios
+      tags:
+        - Horarios
+      parameters:
+        - name: fecha
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Fecha para consultar horarios disponibles
+      responses:
+        '200':
+          description: Horarios obtenidos exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: time
+                  example: "09:00"
+        '400':
+          description: Fecha inválida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/datos-cliente:
+    post:
+      summary: Procesa datos del cliente
+      description: Guarda los datos del cliente y su selección de servicios
+      operationId: procesarDatosCliente
+      tags:
+        - Clientes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatosClienteRequest'
+      responses:
+        '200':
+          description: Datos procesados exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatosClienteResponse'
+        '400':
+          description: Datos incompletos o inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ReservaRequest:
+      type: object
+      required:
+        - cliente_id
+        - servicio_id
+        - fecha
+        - hora
+      properties:
+        cliente_id:
+          type: string
+          description: ID del cliente
+          example: "CLI-123456"
+        servicio_id:
+          type: string
+          description: ID del servicio a reservar
+          example: "SERV-789012"
+        fecha:
+          type: string
+          format: date
+          description: Fecha de la reserva
+          example: "2024-03-20"
+        hora:
+          type: string
+          format: time
+          description: Hora de la reserva
+          example: "14:00"
+        notas:
+          type: string
+          description: Notas adicionales para la reserva
+          example: "Cliente solicita servicio prioritario"
+
+    ReservaResponse:
+      type: object
+      properties:
+        reserva_id:
+          type: string
+          description: ID único de la reserva
+          example: "RES-123456"
+        cliente_id:
+          type: string
+          description: ID del cliente
+          example: "CLI-123456"
+        servicio_id:
+          type: string
+          description: ID del servicio reservado
+          example: "SERV-789012"
+        fecha:
+          type: string
+          format: date
+          description: Fecha de la reserva
+          example: "2024-03-20"
+        hora:
+          type: string
+          format: time
+          description: Hora de la reserva
+          example: "14:00"
+        estado:
+          type: string
+          enum: [pendiente, confirmada, cancelada]
+          description: Estado actual de la reserva
+          example: "pendiente"
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha y hora de creación de la reserva
+          example: "2024-03-15T10:30:00Z"
+
+    DisponibilidadResponse:
+      type: object
+      properties:
+        fechas_disponibles:
+          type: array
+          items:
+            type: object
+            properties:
+              fecha:
+                type: string
+                format: date
+                description: Fecha disponible
+                example: "2024-03-20"
+              horarios_disponibles:
+                type: array
+                items:
+                  type: string
+                  format: time
+                  description: Horarios disponibles para la fecha
+                  example: "09:00"
+
+    PagoReservaRequest:
+      type: object
+      required:
+        - reserva_id
+        - metodo_pago
+      properties:
+        reserva_id:
+          type: string
+          description: ID de la reserva a pagar
+          example: "RES-123456"
+        metodo_pago:
+          type: string
+          enum: [tarjeta, transferencia, efectivo]
+          description: Método de pago seleccionado
+          example: "tarjeta"
+        datos_pago:
+          type: object
+          description: Datos específicos del método de pago
+          example: {
+            "numero_tarjeta": "4111111111111111",
+            "fecha_vencimiento": "12/25",
+            "cvv": "123"
+          }
+
+    PagoReservaResponse:
+      type: object
+      properties:
+        pago_id:
+          type: string
+          description: ID único del pago
+          example: "PAG-123456"
+        reserva_id:
+          type: string
+          description: ID de la reserva pagada
+          example: "RES-123456"
+        monto:
+          type: number
+          description: Monto pagado
+          example: 120000
+        estado:
+          type: string
+          enum: [pendiente, completado, fallido]
+          description: Estado del pago
+          example: "pendiente"
+        url_pago:
+          type: string
+          description: URL para completar el pago (si aplica)
+          example: "https://surpay.cl/pago/123456"
+        created_at:
+          type: string
+          format: date-time
+          description: Fecha y hora del pago
+          example: "2024-03-15T10:30:00Z"
+
+    EstadoPagoResponse:
+      type: object
+      properties:
+        pago_id:
+          type: string
+          description: ID del pago
+          example: "PAG-123456"
+        reserva_id:
+          type: string
+          description: ID de la reserva
+          example: "RES-123456"
+        estado:
+          type: string
+          enum: [pendiente, completado, fallido, reembolsado]
+          description: Estado actual del pago
+          example: "completado"
+        monto:
+          type: number
+          description: Monto del pago
+          example: 120000
+        fecha_pago:
+          type: string
+          format: date-time
+          description: Fecha y hora del pago
+          example: "2024-03-15T10:30:00Z"
+        detalles:
+          type: object
+          description: Detalles adicionales del pago
+          example: {
+            "metodo_pago": "tarjeta",
+            "ultimos_digitos": "1111",
+            "referencia": "REF-123456"
+          }
+
+    SurpayRequest:
+      type: object
+      required:
+        - idcliente
+        - monto
+        - issue
+        - transaction_id
+      properties:
+        idcliente:
+          type: string
+          description: Identificador único del cliente
+          example: "CLI-123456"
+        monto:
+          type: number
+          description: Monto a pagar
+          example: 120000
+        issue:
+          type: string
+          description: Emisor de tarjeta
+          example: "VISA"
+        transaction_id:
+          type: string
+          description: ID único de la transacción
+          example: "TX-123456789"
+
+    SurpayResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica si el pago se inició correctamente
+          example: true
+        url_pago:
+          type: string
+          description: URL de pago generada
+          example: "https://surpay.cl/pago/123456"
+        message:
+          type: string
+          description: Mensaje de confirmación
+          example: "Pago iniciado exitosamente"
+
+    PagoRequest:
+      type: object
+      required:
+        - idcliente
+        - monto
+        - issue
+        - transaction_id
+      properties:
+        idcliente:
+          type: string
+          description: ID del cliente
+          example: "1"
+        monto:
+          type: number
+          description: Monto a pagar
+          example: 120000
+        issue:
+          type: string
+          description: Identificador único de la venta
+          example: "VENTA-123456789"
+        transaction_id:
+          type: string
+          description: ID de transacción único
+          example: "TX-123456789"
+    
+    PagoResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica si el pago se procesó correctamente
+          example: true
+        url_pago:
+          type: string
+          description: URL de pago de Surpay
+          example: "https://surpay.cl/pago/123456"
+    
+    Servicio:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identificador único del servicio
+          example: "diseno-1"
+        nombre:
+          type: string
+          description: Nombre del servicio
+          example: "Desarrollo de landing page"
+        descripcion:
+          type: string
+          description: Descripción detallada del servicio
+        caracteristicas:
+          type: array
+          items:
+            type: string
+          description: Lista de características del servicio
+        precio:
+          type: number
+          description: Precio del servicio
+          example: 120000
+        tiempo:
+          type: string
+          description: Tiempo estimado de entrega
+          example: "10 días hábiles"
+    
+    DatosClienteRequest:
+      type: object
+      required:
+        - telefono
+        - correo
+        - nombre
+        - apellido
+        - fecha
+        - hora
+        - servicios
+      properties:
+        telefono:
+          type: string
+          description: Número de teléfono del cliente
+          example: "+56912345678"
+        correo:
+          type: string
+          format: email
+          description: Correo electrónico del cliente
+          example: "cliente@ejemplo.com"
+        nombre:
+          type: string
+          description: Nombre del cliente
+          example: "Juan"
+        apellido:
+          type: string
+          description: Apellido del cliente
+          example: "Pérez"
+        fecha:
+          type: string
+          format: date
+          description: Fecha seleccionada para el servicio
+          example: "2024-03-20"
+        hora:
+          type: string
+          format: time
+          description: Hora seleccionada para el servicio
+          example: "14:00"
+        servicios:
+          type: array
+          items:
+            $ref: '#/components/schemas/Servicio'
+          description: Lista de servicios seleccionados
+    
+    DatosClienteResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indica si los datos se procesaron correctamente
+          example: true
+        message:
+          type: string
+          description: Mensaje de confirmación
+          example: "Datos guardados exitosamente"
+    
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Mensaje de error
+          example: "Datos incompletos"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key para autenticación
+
+tags:
+  - name: Agendamiento
+    description: Endpoints para la gestión de reservas y agendamiento
+  - name: Surpay
+    description: Endpoints de la API de Surpay para procesamiento de pagos
+  - name: Pagos
+    description: Endpoints relacionados con el procesamiento de pagos
+  - name: Servicios
+    description: Endpoints para la gestión de servicios
+  - name: Horarios
+    description: Endpoints para la gestión de horarios disponibles
+  - name: Clientes
+    description: Endpoints para la gestión de datos de clientes 
