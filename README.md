@@ -16,7 +16,7 @@ Bienvenido a la tienda y línea de tiempo de Duki, un proyecto que combina la pa
 - Diseño atractivo y responsivo
 
 ### 🛍️ Tienda en Línea
-- Catálogo completo de productos oficiales
+- Catálogo completo de productos 
 - Carrito de compras con persistencia en localStorage
 - Proceso de pago seguro
 - Integración con WhatsApp para finalización de pedidos
