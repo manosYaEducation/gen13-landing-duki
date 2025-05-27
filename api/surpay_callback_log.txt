@@ -1,1 +1,0 @@
-2025-05-27 17:05:57 - {"transaction_id":"TX-1748358351073-cppl3m3p0","status":"success","amount":10000,"payment_method":"Tarjeta de crédito","payment_date":"2025-05-27T15:05:57.267Z"}
