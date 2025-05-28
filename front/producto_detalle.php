@@ -97,7 +97,7 @@ if (!$prod) {
         .detalle-info { max-width:420px; }
         .detalle-nombre { font-size:2.3rem; font-weight:bold; letter-spacing:2px; margin-bottom:0.6rem; color:#e0b800; }
         .detalle-precio { font-size:2rem; color:#e03838; font-weight:bold; margin-bottom:1.2rem; }
-        .detalle-stock { font-size:1.1rem; color:#1fa700; font-weight:bold; margin-bottom:1.2rem; }
+        /* Eliminado estilo de stock */
         .detalle-desc { font-size:1.1rem; color:#c9cfd3; margin-bottom:1.4rem; }
         .detalle-btns { display:flex; gap:1.2rem; }
         .detalle-btn {
@@ -158,9 +158,7 @@ if (!$prod) {
         <div class="detalle-info">
             <div class="detalle-nombre"><?php echo htmlspecialchars($prod['name']); ?></div>
             <div class="detalle-precio">$<?php echo number_format($prod['price'],0,',','.'); ?></div>
-            <div class="detalle-stock">
-                Stock: <?php echo $prod['stock'] > 0 ? '<span style=\'color:#1fa700\'>' . $prod['stock'] . '</span>' : '<span style=\'color:#e03838\'>Agotado</span>'; ?>
-            </div>
+            <!-- Eliminada información de stock -->
             <div class="detalle-desc">
                 <?php echo !empty($prod['description']) ? htmlspecialchars($prod['description']) : 'Sin descripción.'; ?>
             </div>

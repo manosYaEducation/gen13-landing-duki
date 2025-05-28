@@ -32,19 +32,9 @@ if (!empty($data['carrito'])) {
             $cantidad = intval($item['cantidad']);
             
             if ($idProducto > 0 && $cantidad > 0) {
-                // Verificar stock disponible
-                $stock = $conn->query("SELECT stock FROM products WHERE id = $idProducto")->fetch_assoc();
-                if ($stock && $stock['stock'] >= $cantidad) {
-                    // Insertar en la tabla order_details
-                    $conn->query("INSERT INTO order_details (order_id, product_id, quantity) 
-                                VALUES ($orderId, $idProducto, $cantidad)");
-                    
-                    // Actualizar el stock del producto
-                    $conn->query("UPDATE products SET stock = stock - $cantidad WHERE id = $idProducto");
-                } else {
-                    $error = true;
-                    break;
-                }
+                // Insertar en la tabla order_details (sin verificar stock)
+                $conn->query("INSERT INTO order_details (order_id, product_id, quantity) 
+                            VALUES ($orderId, $idProducto, $cantidad)");
             }
         }
         
@@ -61,7 +51,7 @@ if (!empty($data['carrito'])) {
             
             echo json_encode([
                 'success' => false,
-                'message' => 'No hay suficiente stock disponible'
+                'message' => 'Error al procesar el pedido'
             ]);
         }
     } else {

@@ -170,10 +170,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
                 <input type="number" step="0.01" name="price" value="<?php echo $product['price']; ?>" required>
             </div>
             
-            <div class="form-group">
-                <label>STOCK:</label>
-                <input type="number" name="stock" value="<?php echo $product['stock']; ?>" required>
-            </div>
+            <!-- Campo de stock eliminado -->
             
             <div class="form-group">
                 <label>IMAGEN ACTUAL:</label>
@@ -209,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
     $name = $_POST['name'];
     $description = isset($_POST['description']) ? $_POST['description'] : '';
     $price = floatval($_POST['price']);
-    $stock = intval($_POST['stock']);
+    // Stock eliminado
     
     // Primero obtenemos el producto actual para comparar
     $current_product = $conn->query("SELECT * FROM products WHERE id = $product_id")->fetch_assoc();
@@ -239,19 +236,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
         }
     }
     
-    // Actualizar el producto
-    $stmt = $conn->prepare("UPDATE products SET name = ?, description = ?, price = ?, stock = ?, image = ? WHERE id = ?");
-    $stmt->bind_param('ssddsi', $name, $description, $price, $stock, $image_url, $product_id);
+    // Actualizar el producto (sin stock)
+    $stmt = $conn->prepare("UPDATE products SET name = ?, description = ?, price = ?, image = ? WHERE id = ?");
+    $stmt->bind_param('ssdsi', $name, $description, $price, $image_url, $product_id);
     
     if ($stmt->execute()) {
-        // Registrar cambio de stock si hubo
-        if ($stock != $current_product['stock']) {
-            $stock_change = $stock - $current_product['stock'];
-            $reason = "Actualización manual desde admin";
-            $user_id = $_SESSION['user_id'];
-            $conn->query("INSERT INTO stock_history (product_id, `change`, reason, changed_by) 
-                         VALUES ($product_id, $stock_change, '$reason', $user_id)");
-        }
+        // Eliminado el registro de cambio de stock
         
         echo '<script>alert("Producto actualizado correctamente"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
         exit;
