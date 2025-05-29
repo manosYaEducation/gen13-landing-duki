@@ -2,6 +2,13 @@
 // producto_detalle.php
 require_once '../db.php';
 
+// Verificar la ruta base
+echo '<!-- Ruta base: ' . $_SERVER['DOCUMENT_ROOT'] . ' -->';
+echo '<!-- Ruta actual: ' . __FILE__ . ' -->';
+
+// Definir la ruta base
+$base_url = '/landing_duki';
+
 // Obtener el ID del producto desde la URL
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     echo '<h2>Producto no encontrado.</h2>';
@@ -90,7 +97,7 @@ if (!$prod) {
         .detalle-info { max-width:420px; }
         .detalle-nombre { font-size:2.3rem; font-weight:bold; letter-spacing:2px; margin-bottom:0.6rem; color:#e0b800; }
         .detalle-precio { font-size:2rem; color:#e03838; font-weight:bold; margin-bottom:1.2rem; }
-        .detalle-stock { font-size:1.1rem; color:#1fa700; font-weight:bold; margin-bottom:1.2rem; }
+        /* Eliminado estilo de stock */
         .detalle-desc { font-size:1.1rem; color:#c9cfd3; margin-bottom:1.4rem; }
         .detalle-btns { display:flex; gap:1.2rem; }
         .detalle-btn {
@@ -119,27 +126,30 @@ if (!$prod) {
 <body>
     <div class="navbar" style="display: flex; align-items: center; justify-content: space-between;">
         <div style="display: flex; align-items: center;">
-            <img src="../assets/ameri.png" alt="Logo" class="navbar-logo">
+            <img src="<?php echo $base_url; ?>/assets/ameri.png" alt="Logo" class="navbar-logo">
             <div class="navbar-menu">
-                <a href="index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
-                <a href="index.html" class="navbar-link">INICIO</a>
-                <a href="tienda.php" class="navbar-link">PRODUCTOS</a>
+                <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
+                <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">INICIO</a>
+                <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
                 <a href="#" class="navbar-link">CONTACTO</a>
-                <a href="#" class="navbar-link">CARRITO</a>
+                <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link" style="position: relative;">
+                    CARRITO
+                    <span id="carrito-contador" style="background: #e03838; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; top: -8px; right: -8px;">0</span>
+                </a>
             </div>
         </div>
         <div style="display: flex; align-items: center; gap: 1.2rem;">
             <?php if (isset($_SESSION['username'])): ?>
                 <div style="color:#fff; font-weight:bold; font-size:1.1rem; display:flex; align-items:center; gap:0.7rem;">
-                    <img src="/duki/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
+                    <img src="<?php echo $base_url; ?>/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
                     <?php echo htmlspecialchars($_SESSION['username']); ?>
                 </div>
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <a href="/duki/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
+                    <a href="<?php echo $base_url; ?>/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
                 <?php endif; ?>
-                <a href="/duki/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
+                <a href="<?php echo $base_url; ?>/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
             <?php else: ?>
-                <a href="../login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
+                <a href="<?php echo $base_url; ?>/login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
             <?php endif; ?>
         </div>
     </div>
@@ -148,17 +158,41 @@ if (!$prod) {
         <div class="detalle-info">
             <div class="detalle-nombre"><?php echo htmlspecialchars($prod['name']); ?></div>
             <div class="detalle-precio">$<?php echo number_format($prod['price'],0,',','.'); ?></div>
-            <div class="detalle-stock">
-                Stock: <?php echo $prod['stock'] > 0 ? '<span style=\'color:#1fa700\'>' . $prod['stock'] . '</span>' : '<span style=\'color:#e03838\'>Agotado</span>'; ?>
-            </div>
+            <!-- Eliminada información de stock -->
             <div class="detalle-desc">
                 <?php echo !empty($prod['description']) ? htmlspecialchars($prod['description']) : 'Sin descripción.'; ?>
             </div>
             <div class="detalle-btns">
-                <button class="detalle-btn">Agregar al carrito</button>
-                <button class="detalle-btn" style="background:#23232a; color:#e0b800; border:2px solid #e0b800;">Comprar ahora</button>
+                <button class="detalle-btn" id="btn-agregar-carrito">Agregar al carrito</button>
+                <button class="detalle-btn" id="btn-comprar-ahora" style="background:#23232a; color:#e0b800; border:2px solid #e0b800;">Comprar ahora</button>
             </div>
         </div>
     </div>
+    <script src="carrito.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Datos del producto actual
+            const productoId = <?php echo $prod['id']; ?>;
+            const productoNombre = "<?php echo addslashes(htmlspecialchars($prod['name'])); ?>";
+            const productoPrecio = <?php echo $prod['price']; ?>;
+            const productoImagen = "<?php echo addslashes(htmlspecialchars($prod['image'])); ?>";
+            
+            // Botón agregar al carrito
+            document.getElementById('btn-agregar-carrito').addEventListener('click', () => {
+                agregarAlCarrito(productoId, productoNombre, productoPrecio, productoImagen);
+            });
+            
+            // Botón comprar ahora
+            document.getElementById('btn-comprar-ahora').addEventListener('click', () => {
+                // Primero agregamos al carrito
+                agregarAlCarrito(productoId, productoNombre, productoPrecio, productoImagen);
+                // Luego redirigimos al carrito
+                window.location.href = '<?php echo $base_url; ?>/front/carrito.php';
+            });
+            
+            // Inicializar contador de carrito
+            actualizarContadorCarrito();
+        });
+    </script>
 </body>
 </html>

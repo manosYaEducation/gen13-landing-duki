@@ -6,7 +6,7 @@
 [![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-Bienvenido a la tienda y línea de tiempo de Duki, un proyecto que combina la pasión por la música con una experiencia de compra integrada. Este sitio web ofrece una experiencia inmersiva en la carrera del artista, junto con una tienda en línea completa.
+Bienvenido a la tienda oficial y línea de tiempo de Duki, un proyecto que combina la pasión por la música con una experiencia de compra integrada. Este sitio web ofrece una experiencia inmersiva en la carrera del artista, junto con una tienda en línea completa.
 
 ## ✨ Características Principales
 
@@ -16,7 +16,7 @@ Bienvenido a la tienda y línea de tiempo de Duki, un proyecto que combina la pa
 - Diseño atractivo y responsivo
 
 ### 🛍️ Tienda en Línea
-- Catálogo completo de productos 
+- Catálogo completo de productos oficiales
 - Carrito de compras con persistencia en localStorage
 - Proceso de pago seguro
 - Integración con WhatsApp para finalización de pedidos
@@ -99,6 +99,20 @@ El proyecto utiliza una base de datos MySQL con las siguientes tablas principale
 ### Panel de Administración
 - **Usuario:** admin@duki.com
 - **Contraseña:** admin123
+
+## 📞 Soporte
+
+¿Necesitas ayuda o encontraste algún problema? Por favor, abre un issue en el repositorio o contáctanos a través de:
+
+- 📧 Email: soporte@duki.com
+- 🌐 Sitio web: [www.duki.com](https://www.duki.com)
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más información.
+
+---
+
 <div align="center">
   Hecho con ❤️ para los fans de Duki | © 2025 Todos los derechos reservados
 </div>
