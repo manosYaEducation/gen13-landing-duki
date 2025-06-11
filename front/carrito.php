@@ -317,6 +317,16 @@ $base_url = '/landing_duki';
 
         <div id="envio-gratis-barra" style="margin-top: 1rem; text-align: center; font-size: 1.2rem; color: #e0b800;"></div>
         
+        <div style="margin-top: 1.5rem; text-align: center;">
+            <label for="pais-envio" style="font-size: 1.2rem; color: #e0b800;">Selecciona tu país de envío:</label><br>
+            <select id="pais-envio" style="margin-top: 0.5rem; padding: 0.5rem; font-size: 1rem; border-radius: 6px;">
+                <option value="Chile">Chile</option>
+                <option value="Argentina">Argentina</option>
+            </select>
+        </div>
+
+        <div id="tiempo-entrega" style="margin-top: 1rem; text-align: center; font-size: 1.2rem; color: #e0b800;"></div>
+
         <div class="carrito-acciones">
             <a href="<?php echo $base_url; ?>/front/tienda.php" class="btn-seguir-comprando">SEGUIR COMPRANDO</a>
             <button onclick="finalizarCompra()" class="btn-finalizar-compra">FINALIZAR COMPRA</button>
@@ -470,6 +480,27 @@ $base_url = '/landing_duki';
                 const faltante = umbralEnvioGratis - total;
                 envioGratisBarra.textContent = `Te faltan $${faltante.toLocaleString('es-CL')} para obtener envío gratis. 🛍️`;
             }
+
+            // Mostrar tiempo estimado de entrega según país
+            const paisEnvioSelect = document.getElementById('pais-envio');
+            const tiempoEntregaDiv = document.getElementById('tiempo-entrega');
+
+            function actualizarTiempoEntrega() {
+                const pais = paisEnvioSelect.value;
+                let tiempo = '';
+                if (pais === 'Chile') {
+                    tiempo = 'Entrega estimada: 3 a 5 días hábiles.';
+                } else if (pais === 'Argentina') {
+                    tiempo = 'Entrega estimada: 5 a 10 días hábiles.';
+                }
+                tiempoEntregaDiv.textContent = tiempo;
+            }
+
+            // Ejecutar al cargar
+            actualizarTiempoEntrega();
+
+            // Ejecutar cuando el usuario cambie el país
+            paisEnvioSelect.addEventListener('change', actualizarTiempoEntrega);
 
         }
 
