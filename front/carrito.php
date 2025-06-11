@@ -314,7 +314,19 @@ $base_url = '/landing_duki';
             <div class="carrito-total-texto">TOTAL:</div>
             <div class="carrito-total-valor" id="carrito-total-valor">$0</div>
         </div>
+
+        <div id="envio-gratis-barra" style="margin-top: 1rem; text-align: center; font-size: 1.2rem; color: #e0b800;"></div>
         
+        <div style="margin-top: 1.5rem; text-align: center;">
+            <label for="pais-envio" style="font-size: 1.2rem; color: #e0b800;">Selecciona tu país de envío:</label><br>
+            <select id="pais-envio" style="margin-top: 0.5rem; padding: 0.5rem; font-size: 1rem; border-radius: 6px;">
+                <option value="Chile">Chile</option>
+                <option value="Argentina">Argentina</option>
+            </select>
+        </div>
+
+        <div id="tiempo-entrega" style="margin-top: 1rem; text-align: center; font-size: 1.2rem; color: #e0b800;"></div>
+
         <div class="carrito-acciones">
             <a href="<?php echo $base_url; ?>/front/tienda.php" class="btn-seguir-comprando">SEGUIR COMPRANDO</a>
             <button onclick="finalizarCompra()" class="btn-finalizar-compra">FINALIZAR COMPRA</button>
@@ -397,6 +409,9 @@ $base_url = '/landing_duki';
                     throw new Error(data.message || 'Error al crear la orden');
                 }
 
+                // Marcar que ya no es usuario nuevo
+                localStorage.setItem('primeraCompraHecha', 'true');
+
                 // Redirigir a la página de confirmación de pago
                 window.location.href = `confirmar_pago.php?order_id=${data.order_id}&total=${data.total}`;
                 
@@ -430,18 +445,30 @@ $base_url = '/landing_duki';
             if (metodosPago) metodosPago.style.display = 'block';
             carritoItems.innerHTML = '';
             
+            const moneda = localStorage.getItem('monedaSeleccionada') || 'CLP';
+
+            const tipoCambio = {
+                CLP: 1,
+                ARS: 1.26
+            };
+
+            const factorCambio = tipoCambio[moneda] || 1;
+
             let total = 0;
             carrito.forEach(item => {
                 const subtotal = item.precio * item.cantidad;
                 total += subtotal;
-                
+
+                const precioConvertido = item.precio * factorCambio;
+                const subtotalConvertido = subtotal * factorCambio;
+
                 const itemHtml = `
                     <div class="carrito-item">
                         <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-img">
                         <div class="carrito-item-info">
                             <div class="carrito-item-nombre">${item.nombre}</div>
-                            <div class="carrito-item-precio">$${item.precio.toLocaleString('es-CL')}</div>
-                            <div class="carrito-item-subtotal" style="color: #e0b800; margin-top: 0.5rem;">Subtotal: $${subtotal.toLocaleString('es-CL')}</div>
+                            <div class="carrito-item-precio">${moneda} $${precioConvertido.toLocaleString('es-CL')}</div>
+                            <div class="carrito-item-subtotal" style="color: #e0b800; margin-top: 0.5rem;">Subtotal: ${moneda} $${subtotalConvertido.toLocaleString('es-CL')}</div>
                         </div>
                         <div class="carrito-item-acciones">
                             <div class="cantidad-control">
@@ -454,10 +481,64 @@ $base_url = '/landing_duki';
                     </div>
                 `;
                 carritoItems.innerHTML += itemHtml;
+                carritoTotalValor.textContent = `${moneda} $${(total * factorCambio).toLocaleString('es-CL')}`;
             });
 
             // Actualizar el total
-            carritoTotalValor.textContent = '$' + total.toLocaleString('es-CL');
+            carritoTotalValor.textContent = `${moneda} $${(total * factorCambio).toLocaleString('es-CL')}`;
+
+            // Mostrar barra de envío gratis
+            const envioGratisBarra = document.getElementById('envio-gratis-barra');
+            const umbralEnvioGratisNormal = 50000;
+            const umbralEnvioGratisNuevo = 40000;
+
+            // Leer si es usuario nuevo
+            const esUsuarioNuevo = localStorage.getItem('primeraCompraHecha') !== 'true';
+
+            // Determinar umbral a usar
+            let umbralActual = esUsuarioNuevo ? umbralEnvioGratisNuevo : umbralEnvioGratisNormal;
+            let faltante = umbralActual - total;
+            let faltanteConvertido = faltante * factorCambio;
+            let umbralConvertido = umbralActual * factorCambio;
+
+            if (total >= umbralActual) {
+                if (esUsuarioNuevo) {
+                    envioGratisBarra.textContent = '🎁 ¡Como cliente nuevo tienes envío gratis por superar el mínimo de tu primera compra! 🎁';
+                } else {
+                    envioGratisBarra.textContent = '🎉 ¡Tienes envío gratis en tu compra! 🎉';
+                }
+            } else {
+                if (esUsuarioNuevo) {
+                    envioGratisBarra.textContent = `Como cliente nuevo, te faltan ${moneda} $${faltanteConvertido.toLocaleString('es-CL')} para obtener envío gratis. 🎁`;
+                } else {
+                    envioGratisBarra.textContent = `Te faltan ${moneda} $${faltanteConvertido.toLocaleString('es-CL')} para obtener envío gratis. 🛍️`;
+                }
+            }
+
+            // Mostrar tiempo estimado de entrega según país
+            const paisEnvioSelect = document.getElementById('pais-envio');
+            const tiempoEntregaDiv = document.getElementById('tiempo-entrega');
+
+            function actualizarTiempoEntrega() {
+                const pais = paisEnvioSelect.value;
+                let tiempo = '';
+                if (pais === 'Chile') {
+                    tiempo = 'Entrega estimada: 3 a 5 días hábiles.';
+                } else if (pais === 'Argentina') {
+                    tiempo = 'Entrega estimada: 5 a 10 días hábiles.';
+                }
+                tiempoEntregaDiv.textContent = tiempo;
+            }
+
+            // Ejecutar al cargar
+            actualizarTiempoEntrega();
+
+            // Ejecutar cuando el usuario cambie el país
+            paisEnvioSelect.addEventListener('change', actualizarTiempoEntrega);
+        
+            // Actualizar carrito si cambia la moneda
+            monedaSelect.addEventListener('change', renderizarCarrito);
+
         }
 
         // Cuando se carga la página

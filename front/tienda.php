@@ -189,6 +189,15 @@ body {
         </div>
     </div>
     <div style="display: flex; align-items: center; gap: 1.2rem;">
+
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; color: #e0b800;">
+            <label for="moneda-tienda" style="margin: 0;">Moneda:</label>
+            <select id="moneda-tienda" style="padding: 0.2rem 0.4rem; border-radius: 6px; border: none; font-family: 'Bebas Neue', Arial, sans-serif; font-size: 0.95rem;">
+                <option value="CLP">CLP</option>
+                <option value="ARS">ARS</option>
+            </select>
+        </div>
+
         <?php if ($user): ?>
             <div style="color:#fff; font-weight:bold; font-size:1.1rem; display:flex; align-items:center; gap:0.7rem;">
                 <img src="<?php echo $base_url; ?>/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
