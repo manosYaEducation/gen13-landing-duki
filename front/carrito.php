@@ -409,6 +409,9 @@ $base_url = '/landing_duki';
                     throw new Error(data.message || 'Error al crear la orden');
                 }
 
+                // Marcar que ya no es usuario nuevo
+                localStorage.setItem('primeraCompraHecha', 'true');
+
                 // Redirigir a la página de confirmación de pago
                 window.location.href = `confirmar_pago.php?order_id=${data.order_id}&total=${data.total}`;
                 
@@ -486,15 +489,27 @@ $base_url = '/landing_duki';
 
             // Mostrar barra de envío gratis
             const envioGratisBarra = document.getElementById('envio-gratis-barra');
-            const umbralEnvioGratis = 50000;
-            if (total >= umbralEnvioGratis) {
-                envioGratisBarra.textContent = '🎉 ¡Tienes envío gratis en tu compra! 🎉';
-            } else {
-                const faltante = umbralEnvioGratis - total;
-                const faltanteConvertido = faltante * factorCambio;
+            const umbralEnvioGratisNormal = 50000;
+            const umbralEnvioGratisNuevo = 40000;
 
-                if (total >= umbralEnvioGratis) {
+            // Leer si es usuario nuevo
+            const esUsuarioNuevo = localStorage.getItem('primeraCompraHecha') !== 'true';
+
+            // Determinar umbral a usar
+            let umbralActual = esUsuarioNuevo ? umbralEnvioGratisNuevo : umbralEnvioGratisNormal;
+            let faltante = umbralActual - total;
+            let faltanteConvertido = faltante * factorCambio;
+            let umbralConvertido = umbralActual * factorCambio;
+
+            if (total >= umbralActual) {
+                if (esUsuarioNuevo) {
+                    envioGratisBarra.textContent = '🎁 ¡Como cliente nuevo tienes envío gratis por superar el mínimo de tu primera compra! 🎁';
+                } else {
                     envioGratisBarra.textContent = '🎉 ¡Tienes envío gratis en tu compra! 🎉';
+                }
+            } else {
+                if (esUsuarioNuevo) {
+                    envioGratisBarra.textContent = `Como cliente nuevo, te faltan ${moneda} $${faltanteConvertido.toLocaleString('es-CL')} para obtener envío gratis. 🎁`;
                 } else {
                     envioGratisBarra.textContent = `Te faltan ${moneda} $${faltanteConvertido.toLocaleString('es-CL')} para obtener envío gratis. 🛍️`;
                 }
