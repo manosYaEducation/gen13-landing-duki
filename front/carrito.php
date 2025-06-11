@@ -314,6 +314,8 @@ $base_url = '/landing_duki';
             <div class="carrito-total-texto">TOTAL:</div>
             <div class="carrito-total-valor" id="carrito-total-valor">$0</div>
         </div>
+
+        <div id="envio-gratis-barra" style="margin-top: 1rem; text-align: center; font-size: 1.2rem; color: #e0b800;"></div>
         
         <div class="carrito-acciones">
             <a href="<?php echo $base_url; ?>/front/tienda.php" class="btn-seguir-comprando">SEGUIR COMPRANDO</a>
@@ -458,6 +460,17 @@ $base_url = '/landing_duki';
 
             // Actualizar el total
             carritoTotalValor.textContent = '$' + total.toLocaleString('es-CL');
+
+            // Mostrar barra de envío gratis
+            const envioGratisBarra = document.getElementById('envio-gratis-barra');
+            const umbralEnvioGratis = 50000;
+            if (total >= umbralEnvioGratis) {
+                envioGratisBarra.textContent = '🎉 ¡Tienes envío gratis en tu compra! 🎉';
+            } else {
+                const faltante = umbralEnvioGratis - total;
+                envioGratisBarra.textContent = `Te faltan $${faltante.toLocaleString('es-CL')} para obtener envío gratis. 🛍️`;
+            }
+
         }
 
         // Cuando se carga la página
