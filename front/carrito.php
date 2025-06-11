@@ -442,18 +442,30 @@ $base_url = '/landing_duki';
             if (metodosPago) metodosPago.style.display = 'block';
             carritoItems.innerHTML = '';
             
+            const moneda = localStorage.getItem('monedaSeleccionada') || 'CLP';
+
+            const tipoCambio = {
+                CLP: 1,
+                ARS: 1.26
+            };
+
+            const factorCambio = tipoCambio[moneda] || 1;
+
             let total = 0;
             carrito.forEach(item => {
                 const subtotal = item.precio * item.cantidad;
                 total += subtotal;
-                
+
+                const precioConvertido = item.precio * factorCambio;
+                const subtotalConvertido = subtotal * factorCambio;
+
                 const itemHtml = `
                     <div class="carrito-item">
                         <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-img">
                         <div class="carrito-item-info">
                             <div class="carrito-item-nombre">${item.nombre}</div>
-                            <div class="carrito-item-precio">$${item.precio.toLocaleString('es-CL')}</div>
-                            <div class="carrito-item-subtotal" style="color: #e0b800; margin-top: 0.5rem;">Subtotal: $${subtotal.toLocaleString('es-CL')}</div>
+                            <div class="carrito-item-precio">${moneda} $${precioConvertido.toLocaleString('es-CL')}</div>
+                            <div class="carrito-item-subtotal" style="color: #e0b800; margin-top: 0.5rem;">Subtotal: ${moneda} $${subtotalConvertido.toLocaleString('es-CL')}</div>
                         </div>
                         <div class="carrito-item-acciones">
                             <div class="cantidad-control">
@@ -466,10 +478,11 @@ $base_url = '/landing_duki';
                     </div>
                 `;
                 carritoItems.innerHTML += itemHtml;
+                carritoTotalValor.textContent = `${moneda} $${(total * factorCambio).toLocaleString('es-CL')}`;
             });
 
             // Actualizar el total
-            carritoTotalValor.textContent = '$' + total.toLocaleString('es-CL');
+            carritoTotalValor.textContent = `${moneda} $${(total * factorCambio).toLocaleString('es-CL')}`;
 
             // Mostrar barra de envío gratis
             const envioGratisBarra = document.getElementById('envio-gratis-barra');
@@ -478,7 +491,13 @@ $base_url = '/landing_duki';
                 envioGratisBarra.textContent = '🎉 ¡Tienes envío gratis en tu compra! 🎉';
             } else {
                 const faltante = umbralEnvioGratis - total;
-                envioGratisBarra.textContent = `Te faltan $${faltante.toLocaleString('es-CL')} para obtener envío gratis. 🛍️`;
+                const faltanteConvertido = faltante * factorCambio;
+
+                if (total >= umbralEnvioGratis) {
+                    envioGratisBarra.textContent = '🎉 ¡Tienes envío gratis en tu compra! 🎉';
+                } else {
+                    envioGratisBarra.textContent = `Te faltan ${moneda} $${faltanteConvertido.toLocaleString('es-CL')} para obtener envío gratis. 🛍️`;
+                }
             }
 
             // Mostrar tiempo estimado de entrega según país
@@ -501,6 +520,9 @@ $base_url = '/landing_duki';
 
             // Ejecutar cuando el usuario cambie el país
             paisEnvioSelect.addEventListener('change', actualizarTiempoEntrega);
+        
+            // Actualizar carrito si cambia la moneda
+            monedaSelect.addEventListener('change', renderizarCarrito);
 
         }
 
