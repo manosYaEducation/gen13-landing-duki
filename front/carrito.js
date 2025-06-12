@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const moneda = localStorage.getItem('monedaSeleccionada') || 'CLP';
         const tipoCambio = {
             CLP: 1,
-            ARS: 0.55 // Ajusta este valor según la conversión real
+            ARS: 1.26
         };
         const factorCambio = tipoCambio[moneda] || 1;
 

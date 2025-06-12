@@ -157,7 +157,8 @@ if (!$prod) {
         <img class="detalle-img" src="<?php echo htmlspecialchars($prod['image']); ?>" alt="<?php echo htmlspecialchars($prod['name']); ?>">
         <div class="detalle-info">
             <div class="detalle-nombre"><?php echo htmlspecialchars($prod['name']); ?></div>
-            <div class="detalle-precio">$<?php echo number_format($prod['price'],0,',','.'); ?></div>
+            <div class="detalle-precio product-price">$<?php echo number_format($prod['price'],0,',','.'); ?></div>
+
             <!-- Eliminada información de stock -->
             <div class="detalle-desc">
                 <?php echo !empty($prod['description']) ? htmlspecialchars($prod['description']) : 'Sin descripción.'; ?>
@@ -169,6 +170,29 @@ if (!$prod) {
         </div>
     </div>
     <script src="carrito.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        actualizarPreciosProductos();
+
+        function actualizarPreciosProductos() {
+            const moneda = localStorage.getItem('monedaSeleccionada') || 'CLP';
+            const tipoCambio = {
+                CLP: 1,
+                ARS: 1.26
+            };
+            const factorCambio = tipoCambio[moneda] || 1;
+
+            document.querySelectorAll('.product-price').forEach(precioElem => {
+                const precioTexto = precioElem.textContent.trim();
+                const precioCLP = parseInt(precioTexto.replace(/[^\d]/g, ''), 10);
+                const precioConvertido = precioCLP * factorCambio;
+                precioElem.textContent = `${moneda} $${precioConvertido.toLocaleString('es-CL')}`;
+            });
+        }
+    });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Datos del producto actual
