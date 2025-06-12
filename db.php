@@ -3,6 +3,7 @@ $host = "localhost";
 $user = "root";
 $password = ""; // Por defecto en XAMPP, el usuario root no tiene contraseña
 $dbname = "duki_store";
+$port = 3306;
 
 // Crear conexión
 $conn = new mysqli($host, $user, $password, $dbname);

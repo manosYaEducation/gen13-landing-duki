@@ -181,7 +181,7 @@ body {
         <div class="navbar-menu">
             <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
             <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
-            <a href="#" class="navbar-link">CONTACTO</a>
+            <a href="<?php echo $base_url; ?>/front/contacto.html" class="navbar-link">CONTACTO</a>
             <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link" style="position: relative;">
                 CARRITO
                 <span id="carrito-contador" style="background: #e03838; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; top: -8px; right: -8px;">0</span>

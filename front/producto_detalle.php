@@ -7,7 +7,7 @@ echo '<!-- Ruta base: ' . $_SERVER['DOCUMENT_ROOT'] . ' -->';
 echo '<!-- Ruta actual: ' . __FILE__ . ' -->';
 
 // Definir la ruta base
-$base_url = '/landing_duki';
+$base_url = '/landing-duki';
 
 // Obtener el ID del producto desde la URL
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {

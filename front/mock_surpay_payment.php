@@ -3,7 +3,7 @@ session_start();
 require_once '../db.php';
 
 // Definir la ruta base
-$base_url = '/landing_duki';
+$base_url = '/landing-duki';
 
 // Obtener los datos de la URL
 $transaction_id = $_GET['transaction_id'] ?? '';

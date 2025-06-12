@@ -3,7 +3,7 @@ session_start();
 $user = isset($_SESSION["username"]) ? $_SESSION["username"] : null;
 
 // Definir la ruta base
-$base_url = '/landing_duki';
+$base_url = '/landing-duki';
 ?>
 <!DOCTYPE html>
 <html lang="es">

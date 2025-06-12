@@ -118,9 +118,10 @@ body {
 }
 </style>
 <div class="register-container">
-    <img src="../assets/ameri.png" alt="Logo" class="register-logo">
+    <img src="/landing-duki/assets/ameri.png" alt="Logo" class="register-logo">
     <div class="register-title">REGISTRO</div>
-    <form class="register-form" method="POST" action="/landing_duki/register.php">
+    <a href="/landing-duki/front/tienda.php" class="back-btn" style="background: #e03838; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 0 16px #e03838cc; transition: all 0.2s;">VOLVER A LA TIENDA</a>
+    <form class="register-form" method="POST" action="/landing-duki/register.php">
         <div class="input-group">
             <label for="username">Usuario</label>
             <input type="text" id="username" name="username" required>
@@ -137,7 +138,7 @@ body {
     </form>
     <div class="register-login">
         ¿Ya tienes cuenta?
-        <a href="login2017-2018.html">Inicia sesión</a>
+        <a href="login.php">Inicia sesión</a>
     </div>
 </div>
 </body>

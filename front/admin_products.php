@@ -8,7 +8,7 @@ if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "admin") {
 require_once '../db.php';
 
 // Definir la ruta base
-$base_url = '/landing_duki';
+$base_url = '/landing-duki';
 
 // Procesar eliminación de producto
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
@@ -27,7 +27,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
         // Ahora eliminar el producto de la base de datos
         if ($conn->query("DELETE FROM products WHERE id = $product_id")) {
             // Si tiene imagen y la imagen está en nuestro servidor, la eliminamos
-            if (!empty($product['image']) && strpos($product['image'], '/landing_duki/assets/') !== false) {
+            if (!empty($product['image']) && strpos($product['image'], '/landing-duki/assets/') !== false) {
                 $image_path = $_SERVER['DOCUMENT_ROOT'] . $product['image'];
                 if (file_exists($image_path)) {
                     unlink($image_path);
@@ -224,10 +224,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
         $target = '../assets/tienda/' . $img_name;
         
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-            $image_url = '/landing_duki/assets/tienda/' . $img_name;
+            $image_url = '/landing-duki/assets/tienda/' . $img_name;
             
             // Si tenía una imagen anterior, la eliminamos
-            if (!empty($current_product['image']) && strpos($current_product['image'], '/landing_duki/assets/') !== false) {
+            if (!empty($current_product['image']) && strpos($current_product['image'], '/landing-duki/assets/') !== false) {
                 $old_image_path = $_SERVER['DOCUMENT_ROOT'] . $current_product['image'];
                 if (file_exists($old_image_path)) {
                     unlink($old_image_path);
