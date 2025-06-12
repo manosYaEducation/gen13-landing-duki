@@ -283,7 +283,7 @@ $base_url = '/landing-duki';
             <div class="navbar-menu">
                 <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
                 <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
-                <a href="#" class="navbar-link">CONTACTO</a>
+                <a href="<?php echo $base_url; ?>/front/contacto.php" class="navbar-link">CONTACTO</a>
                 <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link" style="position: relative;">
                     CARRITO
                     <span id="carrito-contador">0</span>
