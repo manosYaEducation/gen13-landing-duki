@@ -974,3 +974,31 @@ body {
         width: 36px;
     }
 } 
+
+.share-buttons {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+}
+
+.share-buttons span {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #10b981;
+}
+
+.share-buttons a {
+    display: inline-block;
+    margin: 0 8px;
+    color: #fff;
+    font-size: 1.4rem;
+    text-decoration: none;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.share-buttons a:hover {
+    transform: scale(1.2);
+    color: #10b981;
+}
