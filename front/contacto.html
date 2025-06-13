@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Duki</title>
+    <!-- Precargar fuentes críticas -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            background: #18181c;
+            margin: 0;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            color: #fff;
+            opacity: 0;
+            transition: opacity 0.3s ease-in;
+        }
+        body.loaded {
+            opacity: 1;
+        }
+        .contacto-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease-out;
+        }
+        .contacto-container.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .contacto-titulo {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+        .contacto-info {
+            background: #23232a;
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow: 0 0 24px #6f0001cc;
+        }
+        .contacto-form {
+            background: #23232a;
+            border-radius: 18px;
+            padding: 2rem;
+            box-shadow: 0 0 24px #6f0001cc;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background: #6f0001;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.3s ease-out;
+        }
+        .info-icon.loaded {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .info-text {
+            font-size: 1.1rem;
+            color: #c9cfd3;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: #c9cfd3;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #6f0001;
+            border-radius: 8px;
+            background: #18181c;
+            color: #fff;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-size: 1.1rem;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #e03838;
+        }
+        .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #6f0001;
+            border-radius: 8px;
+            background: #18181c;
+            color: #fff;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-size: 1.1rem;
+            min-height: 150px;
+            resize: vertical;
+            transition: border-color 0.2s;
+        }
+        .form-textarea:focus {
+            outline: none;
+            border-color: #e03838;
+        }
+        .form-submit {
+            background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            box-shadow: 0 0 12px #6f0001cc;
+            cursor: pointer;
+            text-shadow: 0 0 8px #fff, 0 0 6px #6f0001;
+            transition: background 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+        .form-submit:hover {
+            background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
+            box-shadow: 0 0 24px #6f0001;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: #6f0001;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.2rem;
+            transition: transform 0.2s, background 0.2s;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .social-link.loaded {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: #e03838;
+        }
+        @media (max-width: 768px) {
+            .contacto-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <?php include 'components/navbar.php'; ?>
+
+    <div class="contacto-container">
+        <h1 class="contacto-titulo">CONTACTO</h1>
+        
+        <div class="contacto-grid">
+            <div class="contacto-info">
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="info-text">
+                        <strong>Dirección:</strong><br>
+                        Santiago, Chile
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="info-text">
+                        <strong>Email:</strong><br>
+                        contacto@duki.com
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="info-text">
+                        <strong>Teléfono:</strong><br>
+                        +56 9 1234 5678
+                    </div>
+                </div>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="contacto-form">
+                <form id="contactForm" onsubmit="return enviarFormulario(event)">
+                    <div class="form-group">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-input" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mensaje</label>
+                        <textarea class="form-textarea" name="mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">ENVIAR MENSAJE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para manejar la carga suave
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mostrar el body con fade in
+            document.body.classList.add('loaded');
+            
+            // Mostrar el contenedor con animación
+            setTimeout(() => {
+                document.querySelector('.contacto-container').classList.add('loaded');
+                
+                // Animar los iconos de información
+                const infoIcons = document.querySelectorAll('.info-icon');
+                infoIcons.forEach((icon, index) => {
+                    setTimeout(() => {
+                        icon.classList.add('loaded');
+                    }, 100 * (index + 1));
+                });
+
+                // Animar los enlaces sociales
+                const socialLinks = document.querySelectorAll('.social-link');
+                socialLinks.forEach((link, index) => {
+                    setTimeout(() => {
+                        link.classList.add('loaded');
+                    }, 100 * (index + 1));
+                });
+            }, 100);
+        });
+
+        // Función para enviar el formulario
+        async function enviarFormulario(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const submitButton = form.querySelector('.form-submit');
+            
+            // Deshabilitar el botón durante el envío
+            submitButton.disabled = true;
+            submitButton.style.opacity = '0.7';
+            
+            try {
+                const response = await fetch('mail_handler.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Mensaje enviado correctamente');
+                    form.reset();
+                } else {
+                    alert('Error al enviar el mensaje: ' + data.message);
+                }
+            } catch (error) {
+                alert('Error al enviar el mensaje. Por favor, intente nuevamente.');
+            } finally {
+                // Rehabilitar el botón después del envío
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+            }
+            
+            return false;
+        }
+
+        // Intersection Observer para carga perezosa
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('loaded');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Observar elementos que necesitan carga perezosa
+        document.querySelectorAll('.info-icon, .social-link').forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html> 

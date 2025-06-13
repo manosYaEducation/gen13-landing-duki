@@ -41,36 +41,7 @@ body {
     font-family: 'Bebas Neue', Arial, sans-serif;
     color: #fff;
 }
-.navbar {
-    background: #18181c;
-    border-bottom: 2.5px solid #6f0001;
-    display: flex;
-    align-items: center;
-    padding: 0.6rem 2rem;
-    box-shadow: 0 2px 24px #6f0001cc;
-}
-.navbar-logo {
-    width: 48px;
-    margin-right: 2rem;
-}
-.navbar-menu {
-    display: flex;
-    gap: 2.2rem;
-}
-.navbar-link {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1.1rem;
-    font-weight: bold;
-    letter-spacing: 1px;
-    padding: 0.3rem 0.8rem;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
-}
-.navbar-link:hover {
-    background: #6f0001;
-    color: #fff;
-}
+
 .tienda-title {
     font-size: 2rem;
     margin: 2rem 0 1rem 2.5rem;
@@ -175,42 +146,9 @@ body {
     border-color: #556694;
 }
     </style>
-    <div class="navbar" style="display: flex; align-items: center; justify-content: space-between;">
-    <div style="display: flex; align-items: center;">
-        <img src="<?php echo $base_url; ?>/assets/ameri.png" alt="Logo" class="navbar-logo">
-        <div class="navbar-menu">
-            <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
-            <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
-            <a href="<?php echo $base_url; ?>/front/contacto.php" class="navbar-link">CONTACTO</a>
-            <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link" style="position: relative;">
-                CARRITO
-                <span id="carrito-contador" style="background: #e03838; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; top: -8px; right: -8px;">0</span>
-            </a>
-        </div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 1.2rem;">
-
-        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; color: #e0b800;">
-            <label for="moneda-tienda" style="margin: 0;">Moneda:</label>
-            <select id="moneda-tienda" style="padding: 0.2rem 0.4rem; border-radius: 6px; border: none; font-family: 'Bebas Neue', Arial, sans-serif; font-size: 0.95rem;">
-                <option value="CLP">CLP</option>
-                <option value="ARS">ARS</option>
-            </select>
-        </div>
-
-        <?php if ($user): ?>
-            <div style="color:#fff; font-weight:bold; font-size:1.1rem; display:flex; align-items:center; gap:0.7rem;">
-                <img src="<?php echo $base_url; ?>/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
-                <?php echo htmlspecialchars($user); ?>
-            </div>
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                <a href="<?php echo $base_url; ?>/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
-            <?php endif; ?>
-            <a href="<?php echo $base_url; ?>/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
-        <?php else: ?>
-            <a href="<?php echo $base_url; ?>/login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
-        <?php endif; ?>
-    </div>
+<body>
+    
+<?php include 'components/navbar.php'; ?>
 </div>
     <div class="tienda-title"></div>
     <div class="products-container">

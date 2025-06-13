@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $data = [
                 'from' => 'onboarding@resend.dev',
-                'to' => 'sebastiansch.dev@gmail.com',
+                'to' => 'sebastiansch.dev@gmail.com', #aqui cambiar el correo
                 'subject' => "LANDING DUKI - ASUNTO: $asunto",
                 'html' => "
                     <h2>Nuevo mensaje de contacto</h2>
@@ -251,12 +251,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
+    <?php include 'components/navbar.php'; ?>
+    
     <div class="contact-container">
         <div class="contact-content">
             <div class="contact-info">
-                <div>
-                    <a href="/landing-duki/front/tienda.php" class="back-btn" style="background: #e03838; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; margin-bottom: 40px; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 0 16px #e03838cc; transition: all 0.2s;">VOLVER A LA TIENDA</a>
-                </div>
                 <h2>Contacto</h2>
                 <p>¿Tienes alguna pregunta o sugerencia? ¡Nos encantaría escucharte!</p>
                 
