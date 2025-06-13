@@ -63,28 +63,126 @@ $base_url = '/landing-duki';
     border-color: #556694;
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 768px) {
     .navbar {
         flex-direction: column;
-        padding: 1rem;
+        padding: 0.6rem 1rem;
     }
-    
-    .navbar-menu {
-        flex-direction: column;
+
+    .navbar > div:first-child {
         width: 100%;
+        justify-content: space-between;
+    }
+
+    .navbar-logo {
+        margin-right: 1rem !important;
+    }
+
+    .navbar-menu {
+        display: none !important;
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem !important;
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .navbar-menu.active {
+        display: flex !important;
+    }
+
+    .navbar > div:last-child {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
         margin-top: 1rem;
     }
-    
-    .navbar-link {
+
+    .login-btn-navbar {
         width: 100%;
         text-align: center;
-        margin: 0.5rem 0;
+        margin: 0.5rem 0 !important;
+    }
+
+    /* Botón hamburguesa */
+    .menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+
+    .menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background: #fff;
+        margin: 5px 0;
+        transition: 0.3s;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+    }
+
+    .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-link {
+        font-size: 1rem !important;
+        padding: 0.3rem 0.6rem !important;
+    }
+
+    .login-btn-navbar {
+        font-size: 1rem !important;
+        padding: 0.6rem 1.2rem !important;
     }
 }
 </style>
 
+<button class="menu-toggle" id="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const navbarMenu = document.querySelector('.navbar-menu');
+
+    menuToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        navbarMenu.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('.navbar-link').forEach(link => {
+        link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navbarMenu.classList.remove('active');
+        });
+    });
+
+    // Cerrar menú al hacer clic fuera
+    document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navbarMenu.contains(e.target)) {
+            menuToggle.classList.remove('active');
+            navbarMenu.classList.remove('active');
+        }
+    });
+
     // Actualizar contador del carrito
     function updateCartCount() {
         const cart = JSON.parse(localStorage.getItem('carritoDuki')) || [];

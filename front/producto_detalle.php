@@ -223,10 +223,10 @@ if (!$producto) {
                         <button class="btn-cantidad" onclick="cambiarCantidad(-1)">-</button>
                         <input type="number" id="cantidad" value="1" min="1" max="99" onchange="validarCantidad()">
                         <button class="btn-cantidad" onclick="cambiarCantidad(1)">+</button>
-                    </div>
+        </div>
                     <button class="btn-comprar" onclick="agregarAlCarrito(<?php echo $producto['id']; ?>, '<?php echo addslashes(htmlspecialchars($producto['name'])); ?>', <?php echo $producto['price']; ?>, '<?php echo addslashes(htmlspecialchars($producto['image'])); ?>');">AGREGAR AL CARRITO</button>
                     <a href="tienda.php" class="btn-volver">VOLVER A LA TIENDA</a>
-                </div>
+            </div>
             </div>
         </div>
     </div>
@@ -266,7 +266,7 @@ if (!$producto) {
         }
 
         localStorage.setItem('carritoDuki', JSON.stringify(carrito));
-        actualizarContadorCarrito();
+            actualizarContadorCarrito();
         mostrarNotificacion('Producto agregado al carrito');
     }
 
