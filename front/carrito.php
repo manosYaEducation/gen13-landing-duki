@@ -277,34 +277,7 @@ $base_url = '/landing-duki';
     </style>
 </head>
 <body>
-    <div class="navbar" style="display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center;">
-            <img src="<?php echo $base_url; ?>/assets/ameri.png" alt="Logo" class="navbar-logo">
-            <div class="navbar-menu">
-                <a href="<?php echo $base_url; ?>/index.html" class="navbar-link">VOLVER A LA TIMELINE</a>
-                <a href="<?php echo $base_url; ?>/front/tienda.php" class="navbar-link">PRODUCTOS</a>
-                <a href="<?php echo $base_url; ?>/front/contacto.php" class="navbar-link">CONTACTO</a>
-                <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link" style="position: relative;">
-                    CARRITO
-                    <span id="carrito-contador">0</span>
-                </a>
-            </div>
-        </div>
-        <div style="display: flex; align-items: center; gap: 1.2rem;">
-            <?php if ($user): ?>
-                <div style="color:#fff; font-weight:bold; font-size:1.1rem; display:flex; align-items:center; gap:0.7rem;">
-                    <img src="<?php echo $base_url; ?>/assets/devil (2).png" alt="Devil Icon" style="height:28px; width:28px; object-fit:contain; vertical-align:middle;">
-                    <?php echo htmlspecialchars($user); ?>
-                </div>
-                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-                    <a href="<?php echo $base_url; ?>/front/dashboard.php" class="login-btn-navbar" style="background: #6f0001; color: #fff; margin-left:1rem;">DASHBOARD</a>
-                <?php endif; ?>
-                <a href="<?php echo $base_url; ?>/logout.php" class="login-btn-navbar" style="margin-left:1rem;">CERRAR SESIÓN</a>
-            <?php else: ?>
-                <a href="<?php echo $base_url; ?>/login.php" class="login-btn-navbar" style="margin-left:1rem;">INICIAR SESIÓN</a>
-            <?php endif; ?>
-        </div>
-    </div>
+    <?php include 'components/navbar.php'; ?>
 
     <div class="carrito-container">
         <h1 class="carrito-titulo">TU CARRITO</h1>
