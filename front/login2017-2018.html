@@ -6,6 +6,82 @@
     <title>Login Estética Duki</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Firebase UI -->
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <style>
+    .firebaseui-container {
+        margin: 20px 0;
+        width: 100%;
+    }
+    .firebaseui-idp-button {
+        border-radius: 8px !important;
+        margin-bottom: 10px !important;
+        font-family: 'Bebas Neue', Arial, sans-serif !important;
+        font-size: 1rem !important;
+        height: 45px !important;
+        box-shadow: 0 0 16px rgba(0,0,0,0.2) !important;
+        transition: all 0.2s !important;
+    }
+    .firebaseui-idp-button:hover {
+        box-shadow: 0 0 24px rgba(0,0,0,0.3) !important;
+    }
+    .firebaseui-idp-google {
+        background: #1a1a1e !important;
+        border: 1px solid #6f0001 !important;
+        border-radius: 8px !important;
+        color: #ffffff !important;
+        font-family: 'Bebas Neue', Arial, sans-serif !important;
+        font-size: 1.1rem !important;
+        font-weight: normal !important;
+        height: 48px !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto 15px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 10px 16px !important;
+        box-shadow: 0 0 12px rgba(111, 0, 1, 0.5) !important;
+        transition: all 0.3s ease !important;
+        letter-spacing: 0.5px !important;
+    }
+    .firebaseui-idp-google:hover {
+        background: #6f0001 !important;
+        box-shadow: 0 0 20px rgba(111, 0, 1, 0.8) !important;
+        transform: translateY(-1px);
+    }
+    .firebaseui-idp-icon-wrapper {
+        display: flex !important;
+        margin-right: 12px !important;
+    }
+    .firebaseui-idp-icon {
+        height: 20px !important;
+        width: 20px !important;
+    }
+    .divider {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 20px 0;
+        color: #c9cfd3;
+    }
+    .divider::before,
+    .divider::after {
+        content: '';
+        flex: 1;
+        border-bottom: 1px solid #6f0001;
+    }
+    .divider:not(:empty)::before {
+        margin-right: 1em;
+    }
+    .divider:not(:empty)::after {
+        margin-left: 1em;
+    }
+    </style>
 </head>
 <body>
     <style>
@@ -108,19 +184,47 @@ body {
     font-size: 1rem;
 }
 .login-register a {
-    color: #e03838;
+    color: #ff8a80 !important;
     text-decoration: none;
     font-weight: bold;
     margin-left: 4px;
+    text-shadow: 0 0 8px #ff3d00, 0 0 4px #ff6d00;
+    transition: all 0.3s ease;
 }
 .login-register a:hover {
-    text-decoration: underline;
+    color: #ffd180 !important;
+    text-decoration: none;
+    text-shadow: 0 0 12px #ff9100, 0 0 6px #ff6d00;
+}
+
+.back-to-store {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 25px;
+    color: #c9cfd3;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.back-to-store:hover {
+    color: #e03838;
+    text-decoration: none;
+}
+
+.back-to-store span {
+    margin-right: 5px;
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+}
+
+.back-to-store:hover span {
+    transform: translateX(-3px);
 }
 </style>
 <div class="login-container">
     <img src="/landing-duki/assets/ameri.png" alt="Logo" class="login-logo">
     <div class="login-title">INICIAR SESIÓN</div>
-    <a href="/landing-duki/front/tienda.php" class="back-btn" style="background: #e03838; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 0 16px #e03838cc; transition: all 0.2s;">VOLVER A LA TIENDA</a>
     <form class="login-form" method="POST" action="/landing-duki/login.php">
         <div class="input-group">
             <label for="username">Usuario</label>
@@ -132,10 +236,92 @@ body {
         </div>
         <button type="submit" class="login-btn">ENTRAR</button>
     </form>
+    
+
+    
+    <div id="firebaseui-auth-container" style="margin: 20px 0 10px 0; width: 100%;">
+        <p style="text-align: center; color: #c9cfd3; font-size: 1rem; margin-bottom: 20px; letter-spacing: 0.5px;">O INGRESA CON</p>
+    </div>
+    
     <div class="login-register">
         ¿No tienes cuenta?
         <a href="/landing-duki/register.php">Regístrate</a>
     </div>
+    
+    <a href="/landing-duki/front/tienda.php" class="back-to-store">
+        <span>←</span> Volver a la tienda
+    </a>
 </div>
+    <!-- Configuración de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCdepVqtZD-Yr0FU7uAUdiuzNeHw_BVPUw",
+            authDomain: "duki-store.firebaseapp.com",
+            projectId: "duki-store",
+            storageBucket: "duki-store.firebasestorage.app",
+            messagingSenderId: "717269727774",
+            appId: "1:717269727774:web:f542adc04648862cfacc0f",
+            measurementId: "G-TC1X411F4R"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Inicializar FirebaseUI
+        const uiConfig = {
+            signInSuccessUrl: '/landing-duki/front/tienda.php',
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                {
+                    provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                    requireDisplayName: false
+                }
+            ],
+            tosUrl: '/landing-duki/terminos.html',
+            privacyPolicyUrl: '/landing-duki/privacidad.html',
+            signInFlow: 'popup',
+            callbacks: {
+                signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+                    // Enviar token de autenticación al servidor
+                    if (authResult.user) {
+                        return authResult.user.getIdToken().then(idToken => {
+                            // Enviar el token al servidor PHP para autenticación
+                            const form = document.createElement('form');
+                            form.method = 'POST';
+                            form.action = '/landing-duki/auth/firebase.php';
+                            
+                            const tokenInput = document.createElement('input');
+                            tokenInput.type = 'hidden';
+                            tokenInput.name = 'idToken';
+                            tokenInput.value = idToken;
+                            
+                            form.appendChild(tokenInput);
+                            document.body.appendChild(form);
+                            form.submit();
+                        });
+                    }
+                    return false;
+                }
+            }
+        };
+
+        // Inicializar FirebaseUI
+        const ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', uiConfig);
+
+        // Escuchar cambios en el estado de autenticación
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Usuario autenticado
+                console.log('Usuario autenticado:', user);
+            } else {
+                // Usuario no autenticado
+                console.log('Usuario no autenticado');
+            }
+        });
+    </script>
 </body>
 </html>
