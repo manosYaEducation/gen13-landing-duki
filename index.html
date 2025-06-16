@@ -12,13 +12,211 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <link rel="icon" href="assets/ameri.png">
+    <style>
+        /* Responsive Styles */
+        @media screen and (max-width: 768px) {
+            .navbar-content {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar-center-logo {
+                margin: 10px 0;
+            }
+
+            .navbar-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar-filter {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+
+            .navbar-filter select {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            .timeline-container {
+                padding: 20px 10px;
+            }
+
+            .timeline-content {
+                padding: 15px;
+                margin-left: 20px;
+            }
+
+            .timeline-content h3 {
+                font-size: 1.5rem;
+            }
+
+            .timeline-content h4 {
+                font-size: 1.2rem;
+            }
+
+            .timeline-content p {
+                font-size: 0.9rem;
+            }
+
+            .album-covers {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .album-covers img {
+                width: 100%;
+                max-width: 300px;
+                margin: 10px 0;
+            }
+
+            .share-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .share-btn {
+                margin: 5px;
+            }
+
+            .hits-section {
+                padding: 10px;
+            }
+
+            .hits-list {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+            }
+
+            .hit-item {
+                width: 100%;
+            }
+
+            .hit-cover {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .timeline-content {
+                margin-left: 15px;
+                padding: 10px;
+            }
+
+            .timeline-content h3 {
+                font-size: 1.3rem;
+            }
+
+            .timeline-content h4 {
+                font-size: 1.1rem;
+            }
+
+            .timeline-content p {
+                font-size: 0.85rem;
+            }
+
+            .navbar-filter label {
+                font-size: 0.9rem;
+            }
+
+            .shop-btn {
+                width: 100%;
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .hits-list {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .hit-title {
+                font-size: 0.8rem;
+            }
+
+            .hit-feat {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Base styles for timeline */
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .timeline-content {
+            background: rgba(26, 26, 26, 0.8);
+            border-radius: 8px;
+            padding: 20px;
+            margin-left: 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Base styles for navbar */
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar-filter {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .navbar-filter select {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background: #1a1a1a;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .shop-btn {
+            padding: 8px 20px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .shop-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 <body>
     <div class="hits-section">
         <h2 class="hits-title"></h2>
         <div class="hits-list">
             <div class="hit-item"><a href="https://www.youtube.com/watch?v=W0yp3rSfx3I" target="_blank" rel="noopener noreferrer"><img src="assets/shedontgiveafo.jpg" alt="She Don't Give a Fo" class="hit-cover" loading="lazy"><span class="hit-title hit-2017">She Don't Give a Fo</span></a></div>
-            <div class="hit-item"><a href="https://www.youtube.com/watch?v=dHRlRl_VQXs" target="_blank" rel="noopener noreferrer"><img src="assets/hellocoto.jpg" alt="Hello Cotto" class="hit-cover" loading="lazy"><span class="hit-title hit-2017">Hello Cotto</span></a></div>
+            <div class="hit-item"><a href="https://www.youtube.com/watch?v=dHRlRl_VQXs" target="_blank" rel="noopener noreferrer"><img src="assets/hellocotto.jpg" alt="Hello Cotto" class="hit-cover" loading="lazy"><span class="hit-title hit-2017">Hello Cotto</span></a></div>
             <div class="hit-item"><a href="https://www.youtube.com/watch?v=FRthkpJ_NFo" target="_blank" rel="noopener noreferrer"><img src="assets/goteo.jpg" alt="Goteo" class="hit-cover" loading="lazy"><span class="hit-title hit-2019">Goteo</span></a></div>
             <div class="hit-item"><a href="https://www.youtube.com/watch?v=OWoMlr4bUQ4" target="_blank" rel="noopener noreferrer"><img src="assets/rockstar.jpg" alt="Rockstar" class="hit-cover" loading="lazy"><span class="hit-title hit-2018">Rockstar</span></a></div>
             <div class="hit-item"><a href="https://www.youtube.com/watch?v=Yu7LlLUR2es" target="_blank" rel="noopener noreferrer"><img src="assets/sitesentisola.jpg" alt="Si Te Sentis Sola" class="hit-cover" loading="lazy"><span class="hit-title hit-2018">Si Te Sentis Sola</span></a></div>
@@ -431,7 +629,7 @@
                         <div class="timeline-bar bar-2024"></div>
                         <h3 class="year-2024">2024</h3>
                         <h4>Ameri</h4>
-                        <p>Lanza “Ameri”, su álbum más esperado y ambicioso hasta la fecha.
+                        <p>Lanza "Ameri", su álbum más esperado y ambicioso hasta la fecha.
 
                             -Con Ameri, Duki consolida su madurez artística, combinando géneros como reggaetón, trap, rap y elementos latinos.
                             -El álbum recibió aclamación de la crítica y se posicionó en los rankings globales de Spotify.  
