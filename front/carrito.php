@@ -244,22 +244,7 @@ $base_url = '/landing-duki';
             background: #6f0001;
             color: #fff;
         }
-        .notificacion {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #6f0001;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            transform: translateX(120%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .notificacion.mostrar {
-            transform: translateX(0);
-        }
+        
         #carrito-contador {
             background: #e03838;
             color: white;

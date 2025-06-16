@@ -16,23 +16,6 @@ $base_url = '/landing-duki';
 </head>
 <body>
     <style>
-        .notificacion {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #6f0001;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            transform: translateX(120%);
-            transition: transform 0.3s ease-in-out;
-            z-index: 1000;
-        }
-        .notificacion.mostrar {
-            transform: translateX(0);
-        }
-<?php
 // Incluimos aquí el CSS embebido del archivo original tienda.html
 ?>
 body {
@@ -120,31 +103,7 @@ body {
     color: #fff;
     box-shadow: 0 0 24px #6f0001;
 }
-.login-btn-navbar {
-    background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
-    color: #c9cfd3;
-    border: none;
-    border-radius: 8px;
-    padding: 0.7rem 1.6rem;
-    font-size: 1.1rem;
-    font-family: 'Bebas Neue', Arial, sans-serif;
-    font-weight: bold;
-    letter-spacing: 2px;
-    box-shadow: 0 0 12px #6f0001cc;
-    cursor: pointer;
-    text-shadow: 0 0 8px #899cbc, 0 0 6px #556694;
-    text-decoration: none;
-    margin-left: 1.2rem;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    display: inline-block;
-    border: 2px solid #899cbc;
-}
-.login-btn-navbar:hover {
-    background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
-    color: #fff;
-    box-shadow: 0 0 24px #6f0001;
-    border-color: #556694;
-}
+
     </style>
 <body>
     

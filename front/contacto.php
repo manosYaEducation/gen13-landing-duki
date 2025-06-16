@@ -80,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #000;
+            background-color: #18181c;
             color: #fff;
             font-family: 'Arial', sans-serif;
             margin: 0;

@@ -164,21 +164,7 @@ if (!$producto) {
             background: #6f0001;
             color: #fff;
         }
-        .notificacion {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #6f0001;
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-family: 'Bebas Neue', Arial, sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            box-shadow: 0 0 24px #6f0001cc;
-            z-index: 1000;
-            animation: slideIn 0.3s ease-out;
-        }
+      
         @keyframes slideIn {
             from {
                 transform: translateX(100%);
