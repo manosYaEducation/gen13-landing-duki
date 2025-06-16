@@ -104,6 +104,23 @@ body {
     box-shadow: 0 0 24px #6f0001;
 }
 
+.notificacion {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(35, 35, 42, 0.95);
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(111, 0, 1, 0.5);
+    display: none;
+    z-index: 1000;
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
     </style>
 <body>
     
@@ -141,6 +158,16 @@ body {
         function addToCart(id, nombre, precio, imagen) {
             agregarAlCarrito(id, nombre, precio, imagen);
             event.stopPropagation();
+            
+            // Mostrar notificación centrada
+            const notificacion = document.getElementById('notificacion');
+            notificacion.textContent = '¡Producto agregado al carrito!';
+            notificacion.style.display = 'block';
+            
+            // Ocultar la notificación después de 2 segundos
+            setTimeout(() => {
+                notificacion.style.display = 'none';
+            }, 2000);
         }
     </script>
 </body>
