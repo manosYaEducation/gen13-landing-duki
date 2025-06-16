@@ -14,12 +14,6 @@ body {
     to { opacity: 1; }
 }
 
-.navbar-shop {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-}
-
 .shop-btn {
     background: linear-gradient(45deg,#0eddd4 0%, #f5222b 50%, #488ad3 100%);
     color: #fff;
@@ -857,31 +851,6 @@ body {
     }
 }
 
-.navbar {
-    width: 100%;
-    background: linear-gradient(90deg, #1a1a1a 60%, #ff6b6b 100%);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    padding: 0.5rem 0;
-}
-
-.navbar {
-    width: 100vw;
-    background: rgba(30,30,32,0.98);
-    box-shadow: 0 2px 18px 0 rgba(0,0,0,0.12);
-    position: fixed;
-    left: 0;
-    top: 0;
-    z-index: 999;
-    padding: 0;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    font-family: 'Anton', sans-serif;
-}
-
 body {
     margin-top: 64px;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -894,34 +863,6 @@ body {
     body {
         margin-top: 48px;
     }
-}
-
-.navbar-content {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    height: 64px;
-    max-width: 100vw;
-    margin: 0;
-}
-
-.navbar-logo {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100%;
-}
-
-.navbar-shop {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    height: 100%;
-    position: absolute;
-    right: 2rem;
-    top: 0;
 }
 
 @media (max-width: 900px) {
@@ -941,10 +882,6 @@ body {
 }
 
 @media (max-width: 900px) {
-    .navbar-content {
-        height: 48px;
-        max-width: 100vw;
-    }
     .navbar-shop {
         right: 1rem;
     }
@@ -1001,4 +938,169 @@ body {
 .share-buttons a:hover {
     transform: scale(1.2);
     color: #10b981;
+}
+
+/* ==== NAVBAR limpia ==== */
+.navbar {
+    width: 100%;
+    background: rgba(30, 30, 32, 0.98);
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.12);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    padding: 0;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    border-bottom: 3px solid #6f0001; /* borde rojo */
+    font-family: 'Anton', sans-serif;
+}
+
+.navbar-logo {
+    flex: 0 0 auto;
+}
+
+.navbar-shop {
+    flex: 0 0 auto;
+    margin-left: 10px;
+}
+
+body {
+    margin-top: 64px; /* compensación para la navbar fija */
+}
+
+/* navbar content */
+.navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* logo centrado visualmente */
+    padding: 0 2rem;
+    height: 64px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* logo */
+.navbar-logo {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.logo-img {
+    height: 48px;
+    width: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 8px rgba(255, 107, 107, 0.3));
+    background: transparent;
+    border-radius: 12px;
+    transition: transform 0.2s;
+}
+
+.logo-img:hover {
+    transform: scale(1.08) rotate(-3deg);
+}
+
+/* right section */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* espacio entre filtros y tienda */
+}
+
+/* filtros */
+.navbar-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 10px;
+    border: 2px solid #6f0001;
+    border-radius: 8px;
+    background: rgba(24, 24, 28, 0.9);
+    box-shadow: 0 0 12px #6f0001cc;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.navbar-filter label {
+    margin-right: 5px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.navbar-filter select {
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: none;
+    background: #23232a;
+    color: #fff;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-size: 1rem;
+}
+
+/* tienda */
+.navbar-shop .shop-btn {
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #0eddd4 0%, #f5222b 50%, #488ad3 100%);
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    box-shadow: 0 2px 8px rgba(156, 39, 176, 0.15);
+    border: none;
+}
+
+.navbar-shop .shop-btn:hover {
+    transform: scale(1.07);
+    box-shadow: 0 4px 16px rgba(255, 107, 107, 0.22);
+}
+
+/* ==== Responsive ==== */
+@media (max-width: 900px) {
+    .navbar {
+        height: auto;
+        padding: 0.5rem 1rem;
+    }
+
+    body {
+        margin-top: auto; /* quitar compensación fija */
+    }
+
+    .navbar-content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+    }
+
+    .navbar-logo {
+        margin-bottom: 0.8rem;
+    }
+
+    .navbar-right {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .navbar-filter {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .navbar-shop {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .navbar-shop .shop-btn {
+        width: auto;
+    }
 }
