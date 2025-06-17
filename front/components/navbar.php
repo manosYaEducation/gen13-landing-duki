@@ -57,40 +57,35 @@ $base_url = '/landing-duki';
 .navbar {
     display: flex;
     justify-content: space-between;
-    background-color: #000000;
-    border-bottom: 2.5px solid #6f0001;
-    padding: 0.6rem auto;
-    box-shadow: 0 2px 24px #6f0001cc;
+    align-items: center;
+    background: rgba(30, 30, 32, 0.98);
+    border-bottom: 3px solid #6f0001;
+    padding: 0.6rem 2rem;
+    box-shadow: 0 2px 18px rgba(0, 0, 0, 0.12);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 64px;
+    font-family: 'Anton', sans-serif;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
 }
 
 .navbar-logo {
     width: 48px;
-    margin-left: 2rem;
-    transition: width 0.3s ease; /* Para una transición suave */
-}
-.navbar-link.cart-link{
-    margin-right: 2rem;
-}
-
-
-@media (max-width: 768px) {
-    .navbar-logo {
-        width: 36px;
-        height: 36px; /* Tamaño más pequeño para móviles */
-        margin-right: 1rem; /* Margen más pequeño */
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar-logo {
-        width: 28px;
-        height: 28px; /* Aún más pequeño para pantallas muy pequeñas */
-        margin-right: 0.8rem;
-    }
+    height: 48px;
+    object-fit: contain;
+    transition: all 0.3s ease;
 }
 
 .nav-links {
     display: flex;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -101,7 +96,6 @@ $base_url = '/landing-duki';
 }
 
 .navbar-link {
-    
     color: #c9cfd3;
     border-radius: 8px;
     padding: 0.7rem 1.6rem;
@@ -111,46 +105,28 @@ $base_url = '/landing-duki';
     letter-spacing: 2px;
     cursor: pointer;
     text-decoration: none;
-    margin-left: 1.2rem;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    display: inline-block;
-    margin-right: 1.5rem;
-}
-.navbar-link.cart-link{
-    padding: 0;
-    width: 30px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 .navbar-link:hover {
     background: #6f0001;
     color: #fff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
-
-
-.currency-selector label {
-    margin: 0;
-    color: #fff;
-}
-
-#moneda-tienda {
-    padding: 0.2rem 0.4rem;
-    border-radius: 6px;
-    border: none;
-    font-family: 'Bebas Neue', Arial, sans-serif;
-    font-size: 0.95rem;
-    cursor: pointer;
+.navbar-link.cart-link {
+    padding: 0;
+    width: 30px;
+    margin-right: 2rem;
 }
 
 .cart-link {
     position: relative;
-   
 }
 
 .cart-link i {
     font-size: 1.3rem;
-    padding:0;
-   
 }
 
 .cart-count {
@@ -175,15 +151,12 @@ $base_url = '/landing-duki';
     display: flex;
     align-items: center;
     gap: 0.7rem;
-    flex-direction: row;
 }
 
 .user-icon {
     height: 28px;
     width: 28px;
     object-fit: contain;
-    vertical-align: middle;
-    flex-direction: row;
 }
 
 .login-btn-navbar {
@@ -196,20 +169,31 @@ $base_url = '/landing-duki';
     letter-spacing: 2px;
     cursor: pointer;
     text-decoration: none;
-    margin-left: 1.2rem;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    display: inline-block;
-    margin-right: 1.5rem;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 .login-btn-navbar:hover {
     background: #6f0001;
     color: #fff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
 .logout-link i {
     font-size: 1.3rem;
-    margin-right: 1.5rem;
+}
+
+#moneda-tienda {
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    border: none;
+    background: rgba(24, 24, 28, 0.9);
+    color: #fff;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: 2px solid #6f0001;
+    box-shadow: 0 0 12px #6f0001cc;
 }
 
 .menu-toggle {
@@ -222,7 +206,7 @@ $base_url = '/landing-duki';
     border: none;
     cursor: pointer;
     padding: 0;
-    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 .menu-toggle span {
@@ -235,9 +219,7 @@ $base_url = '/landing-duki';
 
 @media (max-width: 820px) {
     .navbar {
-        flex-direction: row;
         padding: 0.6rem 1rem;
-        flex-wrap: wrap;
     }
 
     .menu-toggle {
@@ -262,64 +244,60 @@ $base_url = '/landing-duki';
         flex-direction: column;
         align-items: center;
         gap: 1rem;
-        padding: 0;
+        padding: 1rem 0;
         background-color: #000000;
-        margin-top: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        border-bottom: 2.5px solid #6f0001;
     }
 
     .nav-links.active, .nav-utils.active {
         display: flex;
     }
 
-    .nav-utils.active {
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-    }
-
     .navbar-link {
         width: 100%;
         text-align: center;
-        padding: 0;
-        font-size: 1rem;
+        margin: 0.5rem 0;
     }
 
     .user-info {
         width: 100%;
         justify-content: center;
-        font-size: 1rem;
     }
 
     .login-btn-navbar {
         width: 100%;
         text-align: center;
-        margin: 0.5rem 0;
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-    }
-
-    .logout-link {
-        width: auto;
         margin: 0.5rem 0;
     }
 
     .navbar-logo {
         width: 36px;
         height: 36px;
-        margin-right: 1rem;
     }
 }
 
 @media (max-width: 480px) {
+    .navbar {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .navbar-logo {
+        width: 28px;
+        height: 28px;
+    }
+
     .navbar-link {
         font-size: 1rem;
-        padding: 0.3rem 0.6rem;
+        padding: 0.5rem 1rem;
     }
 
     .login-btn-navbar {
         font-size: 1rem;
-        padding: 0.6rem 1.2rem;
+        padding: 0.5rem 1rem;
     }
 }
 </style>
