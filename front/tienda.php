@@ -16,13 +16,18 @@ $base_url = '/landing-duki';
 </head>
 <body>
     <style>
-// Incluimos aquí el CSS embebido del archivo original tienda.html
-?>
 body {
     background: #18181c;
     margin: 0;
     font-family: 'Bebas Neue', Arial, sans-serif;
     color: #fff;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .tienda-title {
@@ -40,6 +45,9 @@ body {
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
+    opacity: 0;
+    animation: fadeIn 0.8s ease-in-out forwards;
+    animation-delay: 0.2s;
 }
 .product-card {
     background: #23232a;
@@ -52,6 +60,11 @@ body {
     flex-direction: column;
     align-items: center;
     margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(224, 56, 56, 0.3);
 }
 .product-img {
     width: 120px;
@@ -60,6 +73,10 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 12px #6f0001aa;
     margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+.product-card:hover .product-img {
+    transform: scale(1.05);
 }
 .product-name {
     font-size: 1.1rem;
@@ -95,13 +112,14 @@ body {
     cursor: pointer;
     text-shadow: 0 0 8px #fff, 0 0 6px #6f0001;
     text-decoration: none;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    transition: all 0.3s ease;
     display: inline-block;
 }
 .product-btn:hover {
     background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
     color: #fff;
     box-shadow: 0 0 24px #6f0001;
+    transform: translateY(-2px);
 }
 
 .notificacion {
@@ -119,6 +137,8 @@ body {
     text-align: center;
     font-size: 1.2rem;
     letter-spacing: 1px;
+    opacity: 0;
+    animation: fadeIn 0.3s ease-in-out forwards;
 }
 
     </style>

@@ -86,6 +86,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .navbar {
@@ -260,6 +267,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             max-width: 1200px;
             margin: 100px auto 50px;
             padding: 0 20px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-in-out forwards;
+            animation-delay: 0.2s;
         }
 
         .contact-content {
