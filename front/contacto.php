@@ -78,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #18181c;
@@ -85,6 +86,174 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #000000;
+            border-bottom: 2.5px solid #6f0001;
+            padding: 0.6rem auto;
+            box-shadow: 0 2px 24px #6f0001cc;
+        }
+
+        .navbar-logo {
+            width: 48px;
+            margin-left: 2rem;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-utils {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-link {
+            color: #c9cfd3;
+            border-radius: 8px;
+            padding: 0.7rem 1.6rem;
+            font-size: 1.1rem;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 1.2rem;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            margin-right: 1.5rem;
+        }
+
+        .navbar-link:hover {
+            background: #6f0001;
+            color: #fff;
+        }
+
+        .navbar-link.cart-link {
+            padding: 0;
+            width: 30px;
+            margin-right: 2rem;
+        }
+
+        .cart-link i {
+            font-size: 1.3rem;
+            padding: 0;
+        }
+
+        .cart-count {
+            background: #e03838;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            position: absolute;
+            top: -8px;
+            right: -8px;
+        }
+
+        .user-info {
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            flex-direction: row;
+        }
+
+        .user-icon {
+            height: 28px;
+            width: 28px;
+            object-fit: contain;
+            vertical-align: middle;
+            flex-direction: row;
+        }
+
+        .login-btn-navbar {
+            color: #c9cfd3;
+            border-radius: 8px;
+            padding: 0.7rem 1.6rem;
+            font-size: 1.1rem;
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-left: 1.2rem;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            margin-right: 1.5rem;
+        }
+
+        .login-btn-navbar:hover {
+            background: #6f0001;
+            color: #fff;
+        }
+
+        .logout-link i {
+            font-size: 1.3rem;
+            margin-right: 1.5rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 1rem;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 820px) {
+            .navbar {
+                flex-direction: row;
+                padding: 0.6rem 1rem;
+                flex-wrap: wrap;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .navbar-logo {
+                width: 36px;
+                height: 36px;
+                margin-right: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-logo {
+                width: 28px;
+                height: 28px;
+                margin-right: 0.8rem;
+            }
         }
 
         .contact-container {
