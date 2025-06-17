@@ -11,14 +11,18 @@ function agregarAlCarrito(id, nombre, precio, imagen, cantidad = 1) {
     }
     guardarCarrito();
     mostrarNotificacion(`${nombre} agregado al carrito`);
-    actualizarContadorCarrito();
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
 }
 
 // Eliminar producto del carrito
 function eliminarDelCarrito(id) {
     carrito = carrito.filter(item => item.id !== id);
     guardarCarrito();
-    actualizarContadorCarrito();
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
     if (typeof renderizarCarrito === 'function') {
         renderizarCarrito();
     }
@@ -38,7 +42,9 @@ function actualizarCantidad(id, nuevaCantidad) {
             renderizarCarrito();
         }
     }
-    actualizarContadorCarrito();
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
 }
 
 // Guardar carrito en localStorage
@@ -50,7 +56,9 @@ function guardarCarrito() {
 function vaciarCarrito() {
     carrito = [];
     guardarCarrito();
-    actualizarContadorCarrito();
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
     if (typeof renderizarCarrito === 'function') {
         renderizarCarrito();
     }
@@ -82,17 +90,16 @@ function mostrarNotificacion(mensaje) {
 
 // Actualizar contador del carrito
 function actualizarContadorCarrito() {
-    const contador = document.getElementById('carrito-contador');
-    if (contador) {
-        const cantidad = carrito.reduce((total, item) => total + item.cantidad, 0);
-        contador.textContent = cantidad;
-        contador.style.display = cantidad > 0 ? 'flex' : 'none';
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
     }
 }
 
 // Moneda seleccionada en tienda
 document.addEventListener('DOMContentLoaded', () => {
-    actualizarContadorCarrito();
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount();
+    }
 
     // Cargar moneda guardada
     const monedaGuardada = localStorage.getItem('monedaSeleccionada') || 'CLP';

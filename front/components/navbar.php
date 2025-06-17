@@ -339,11 +339,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const count = cart.reduce((total, item) => total + item.cantidad, 0);
         document.querySelectorAll('.cart-count').forEach(el => {
             el.textContent = count;
+            el.style.display = count > 0 ? 'flex' : 'none';
         });
     }
     
+    // Actualizar contador inicial
     updateCartCount();
+    
+    // Escuchar cambios en el localStorage
     window.addEventListener('storage', updateCartCount);
+    
+    // Exponer la función globalmente para que pueda ser llamada desde otras páginas
+    window.updateCartCount = updateCartCount;
 });
 </script>
 </body>
