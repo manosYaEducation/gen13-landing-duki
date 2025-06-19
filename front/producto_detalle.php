@@ -190,6 +190,24 @@ if (!$producto) {
                 text-align: center;
             }
         }
+        .notificacion {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(35, 35, 42, 0.95);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(111, 0, 1, 0.5);
+            display: none;
+            z-index: 1000;
+            text-align: center;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeIn 0.3s ease-in-out forwards;
+        }
     </style>
 </head>
 <body>
@@ -216,6 +234,8 @@ if (!$producto) {
             </div>
         </div>
     </div>
+
+    <div class="notificacion" id="notificacion"></div>
 
     <script>
     function cambiarCantidad(delta) {
@@ -265,13 +285,11 @@ if (!$producto) {
     }
 
     function mostrarNotificacion(mensaje) {
-        const notificacion = document.createElement('div');
-        notificacion.className = 'notificacion';
+        const notificacion = document.getElementById('notificacion');
         notificacion.textContent = mensaje;
-        document.body.appendChild(notificacion);
-
+        notificacion.style.display = 'block';
         setTimeout(() => {
-            notificacion.remove();
+            notificacion.style.display = 'none';
         }, 2000);
     }
 

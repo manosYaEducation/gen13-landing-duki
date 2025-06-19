@@ -495,7 +495,7 @@ $base_url = '/landing-duki';
             paisEnvioSelect.addEventListener('change', actualizarTiempoEntrega);
         
             // Actualizar carrito si cambia la moneda
-            monedaSelect.addEventListener('change', renderizarCarrito);
+            // monedaSelect.addEventListener('change', renderizarCarrito);
 
         }
 

@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Servidor: 127.0.0.1
--- Tiempo de generación: 27-05-2025 a las 23:57:42
+-- Servidor: localhost
+-- Tiempo de generación: 19-06-2025 a las 18:33:50
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -98,7 +98,10 @@ INSERT INTO `orders` (`id`, `user_id`, `total`, `created_at`, `status`, `fecha`)
 (31, 2, NULL, '2025-05-27 21:28:51', 'pendiente', '2025-05-27 23:28:51'),
 (32, 2, NULL, '2025-05-27 21:29:46', 'pendiente', '2025-05-27 23:29:46'),
 (33, 2, NULL, '2025-05-27 21:32:42', 'pendiente', '2025-05-27 23:32:42'),
-(34, 2, NULL, '2025-05-27 21:34:00', 'rejected', '2025-05-27 23:34:00');
+(34, 2, NULL, '2025-05-27 21:34:00', 'rejected', '2025-05-27 23:34:00'),
+(35, NULL, NULL, '2025-06-16 21:54:23', 'pendiente', '2025-06-16 23:54:23'),
+(36, 4, NULL, '2025-06-18 19:57:09', 'completed', '2025-06-18 21:57:09'),
+(37, 4, NULL, '2025-06-18 19:57:32', 'completed', '2025-06-18 21:57:32');
 
 -- --------------------------------------------------------
 
@@ -155,7 +158,12 @@ INSERT INTO `order_details` (`id`, `order_id`, `product_id`, `quantity`) VALUES
 (37, 31, 9, 1),
 (38, 32, 15, 1),
 (39, 33, 15, 1),
-(40, 34, 14, 1);
+(40, 34, 14, 1),
+(41, 35, 21, 1),
+(42, 36, 20, 2),
+(43, 36, 19, 1),
+(44, 36, 18, 1),
+(45, 37, 14, 2);
 
 -- --------------------------------------------------------
 
@@ -192,19 +200,19 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `stock`, `image`, `created_at`) VALUES
-(8, 'Polera Alas', 'Polera blanca con diseño de alas de duki', 25000.00, 11, '/landing_duki/assets/tienda/prod_68360c81358a4_610 (1).jpg', '2025-05-27 18:40:12'),
-(9, 'Polera A.D.A Tour', 'Polera negra con diseño de A.D.A Tour 2024', 25000.00, 13, '/landing_duki/assets/tienda/prod_68360c23c37d1_640.webp', '2025-05-27 18:40:12'),
-(10, 'Polera Givenchy', 'Polera premium con estilo de alta moda inspirada en \"Givenchy\" de Duki (2022).', 28000.00, 10, '/landing_duki/assets/tienda/prod_68360bd7e9e1a_632 (1).jpg', '2025-05-27 18:40:12'),
-(11, 'Polera Super Sangre Joven', 'Polera oficial del álbum debut \"Super Sangre Joven\" (2019). Diseño con el logo del álbum en la parte frontal.', 27000.00, 14, '/landing_duki/assets/tienda/prod_68360bd02fd3b_71JOPOaBiLL._AC_UY1000_.jpg', '2025-05-27 18:40:12'),
-(12, 'Polera Desde el Fin del Mundo', 'Polera negra con el arte del álbum \"Desde el Fin del Mundo\" (2021). Edición limitada.', 27000.00, 12, '/landing_duki/assets/tienda/prod_68360b3325e67_D_NQ_NP_629596-MLM78395194150_082024-O-playera-de-duki-desde-el-fin-del-mundo-envio-rapido.webp', '2025-05-27 18:40:12'),
-(13, 'Polera Antes de Ameri', 'Polera con diseño inspirado en el álbum \"Antes de Ameri\" (2023). Estilo urbano y minimalista.', 27000.00, 14, '/landing_duki/assets/tienda/prod_68360b4e1916e_T-SHIRTFRONT_1080x.png.webp', '2025-05-27 18:40:12'),
-(14, 'Polera Ameri Tour', 'Polera oficial del \"Ameri Tour\" (2024). Diseño exclusivo con fechas de la gira en la espalda.', 30000.00, 24, '/landing_duki/assets/tienda/prod_68360aba859ab_duki-merch-oficial-ameri-photo.webp', '2025-05-27 18:40:12'),
-(15, 'Polera El Quinto Escalón', 'Polera conmemorativa de la época de El Quinto Escalón (2016). Para los verdaderos fans del freestyle.', 26000.00, 6, '/landing_duki/assets/tienda/prod_68360ab1136fa_D_858891-MLA51538864485_092022-O.jpg', '2025-05-27 18:40:12'),
-(17, 'Polera Milan Duki', 'Polera inspirada en el icónico camperón del Milan que Duki usaba en sus primeras batallas.', 28000.00, 12, '/landing_duki/assets/tienda/prod_68360a6ff0bb9_k-hax8hh_400x400.jpg', '2025-05-27 18:40:12'),
-(18, 'Polera Logo Ameri', 'Polera minimalista con el logo Ameri en el centro. Disponible en negro con detalles dorados.', 24000.00, 30, '/landing_duki/assets/tienda/prod_68360ad62c62f_Polera-Duki-Ameri-Frente-Rojo-Fuerte.png', '2025-05-27 18:40:12'),
-(19, 'Polera Trap Argentino', 'Polera con diseño que combina elementos del trap y la bandera argentina. Tributo a los pioneros del género.', 26000.00, 7, '/landing_duki/assets/tienda/prod_683609aba9211_Camiseta_de_Duki_x_Argentina.webp', '2025-05-27 18:40:12'),
-(20, 'Poster Lost Tape', 'Poster de  \"Lost Tape\" (2023) con diseño vintage de cassette.', 6000.00, 15, '/landing_duki/assets/tienda/prod_6836092e4a4e4_ab67616d0000b2730324a77a6966bb3e4c8b6ac0.jpg', '2025-05-27 18:40:12'),
-(21, 'Polera Mode Duki', 'Polera con ilustración de Duki en estilo retro. Edición de coleccionista.', 28000.00, 0, '/landing_duki/assets/tienda/prod_6836099001b4a_Saa537f38efe2452dbd7daf4d46bdc86dd.avif', '2025-05-27 18:40:12');
+(8, 'Polera Alas', 'Polera blanca con diseño de alas de duki', 25000.00, 11, '/landing-duki/assets/tienda/prod_68360c81358a4_610 (1).jpg', '2025-05-27 18:40:12'),
+(9, 'Polera A.D.A Tour', 'Polera negra con diseño de A.D.A Tour 2024', 25000.00, 13, '/landing-duki/assets/tienda/prod_68360c23c37d1_640.webp', '2025-05-27 18:40:12'),
+(10, 'Polera Givenchy', 'Polera premium con estilo de alta moda inspirada en \"Givenchy\" de Duki (2022).', 28000.00, 10, '/landing-duki/assets/tienda/prod_68360bd7e9e1a_632 (1).jpg', '2025-05-27 18:40:12'),
+(11, 'Polera Super Sangre Joven', 'Polera oficial del álbum debut \"Super Sangre Joven\" (2019). Diseño con el logo del álbum en la parte frontal.', 27000.00, 14, '/landing-duki/assets/tienda/prod_68360bd02fd3b_71JOPOaBiLL._AC_UY1000_.jpg', '2025-05-27 18:40:12'),
+(12, 'Polera Desde el Fin del Mundo', 'Polera negra con el arte del álbum \"Desde el Fin del Mundo\" (2021). Edición limitada.', 27000.00, 12, '/landing-duki/assets/tienda/prod_68360b3325e67_D_NQ_NP_629596-MLM78395194150_082024-O-playera-de-duki-desde-el-fin-del-mundo-envio-rapido.webp', '2025-05-27 18:40:12'),
+(13, 'Polera Antes de Ameri', 'Polera con diseño inspirado en el álbum \"Antes de Ameri\" (2023). Estilo urbano y minimalista.', 27000.00, 14, '/landing-duki/assets/tienda/prod_68360b4e1916e_T-SHIRTFRONT_1080x.png.webp', '2025-05-27 18:40:12'),
+(14, 'Polera Ameri Tour', 'Polera oficial del \"Ameri Tour\" (2024). Diseño exclusivo con fechas de la gira en la espalda.', 30000.00, 24, '/landing-duki/assets/tienda/prod_68360aba859ab_duki-merch-oficial-ameri-photo.webp', '2025-05-27 18:40:12'),
+(15, 'Polera El Quinto Escalón', 'Polera conmemorativa de la época de El Quinto Escalón (2016). Para los verdaderos fans del freestyle.', 26000.00, 6, '/landing-duki/assets/tienda/prod_68360ab1136fa_D_858891-MLA51538864485_092022-O.jpg', '2025-05-27 18:40:12'),
+(17, 'Polera Milan Duki', 'Polera inspirada en el icónico camperón del Milan que Duki usaba en sus primeras batallas.', 28000.00, 12, '/landing-duki/assets/tienda/prod_68360a6ff0bb9_k-hax8hh_400x400.jpg', '2025-05-27 18:40:12'),
+(18, 'Polera Logo Ameri', 'Polera minimalista con el logo Ameri en el centro. Disponible en negro con detalles dorados.', 24000.00, 30, '/landing-duki/assets/tienda/prod_68360ad62c62f_Polera-Duki-Ameri-Frente-Rojo-Fuerte.png', '2025-05-27 18:40:12'),
+(19, 'Polera Trap Argentino', 'Polera con diseño que combina elementos del trap y la bandera argentina. Tributo a los pioneros del género.', 26000.00, 7, '/landing-duki/assets/tienda/prod_683609aba9211_Camiseta_de_Duki_x_Argentina.webp', '2025-05-27 18:40:12'),
+(20, 'Poster Lost Tape', 'Poster de  \"Lost Tape\" (2023) con diseño vintage de cassette.', 6000.00, 15, '/landing-duki/assets/tienda/prod_6836092e4a4e4_ab67616d0000b2730324a77a6966bb3e4c8b6ac0.jpg', '2025-05-27 18:40:12'),
+(21, 'Polera Mode Duki', 'Polera con ilustración de Duki en estilo retro. Edición de coleccionista.', 28000.00, 0, '/landing-duki/assets/tienda/prod_6836099001b4a_Saa537f38efe2452dbd7daf4d46bdc86dd.avif', '2025-05-27 18:40:12');
 
 -- --------------------------------------------------------
 
@@ -252,7 +260,9 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `reset_token`, `reset_token_expiry`, `created_at`) VALUES
 (1, 'dus6n66', 'dusanocaranzadev@gmail.com', '$2y$10$E1IfeAtgt5DIoP48ukR3hOKQ2KB8nlLOUHFKol/46ULUpeBn3z0iy', 'cliente', NULL, NULL, '2025-05-16 16:39:22'),
 (2, 'admin', 'admin@duki.com', '$2y$10$xOPDk7mbhQL6Xn.mJR0bQeuW881EoK4Hap2TnVflkKD8EJ91GUxgS', 'admin', NULL, NULL, '2025-05-16 20:31:59'),
-(3, 'loyalty', 'cebollinlibre@gmail.com', '$2y$10$xOPDk7mbhQL6Xn.mJR0bQeuW881EoK4Hap2TnVflkKD8EJ91GUxgS', 'cliente', NULL, NULL, '2025-05-22 22:31:13');
+(3, 'loyalty', 'cebollinlibre@gmail.com', '$2y$10$xOPDk7mbhQL6Xn.mJR0bQeuW881EoK4Hap2TnVflkKD8EJ91GUxgS', 'cliente', NULL, NULL, '2025-05-22 22:31:13'),
+(4, 'felipe', 'drakgal@outlook.com', '$2y$10$oybMR.9aeif5bmzx6NpLw.b6KhSppQgSvwNCIRRGLNBEuieSjfOae', 'cliente', NULL, NULL, '2025-06-18 19:56:39'),
+(5, 'felipe1', 'fipt1337@gmai.com', '$2y$10$mk21RCLi9Psbkv6IId3DEu81yrjh7lolccT/RQ5WvPzrZ2NZViO6y', 'cliente', NULL, NULL, '2025-06-18 22:02:54');
 
 --
 -- Índices para tablas volcadas
@@ -338,13 +348,13 @@ ALTER TABLE `cart_items`
 -- AUTO_INCREMENT de la tabla `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT de la tabla `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `order_items`
@@ -368,7 +378,7 @@ ALTER TABLE `stock_history`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas
