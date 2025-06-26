@@ -1,6 +1,9 @@
 <?php
+require_once __DIR__ . '/config.php';
 session_start();
-include 'db.php';
+
+// Obtener conexión a la base de datos
+$conn = get_db_connection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = trim($_POST["username"]);
@@ -18,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_id"] = $id;
             $_SESSION["username"] = $username;
             $_SESSION["role"] = $role;
-            header('Location: front/tienda.php');
+            header('Location: ' . get_base_url('front/tienda.php'));
             exit;
         } else {
             echo "Contraseña incorrecta.";

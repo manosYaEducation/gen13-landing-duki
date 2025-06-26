@@ -1,9 +1,7 @@
 <?php
+require_once __DIR__ . '/../config.php';
 session_start();
 $user = isset($_SESSION["username"]) ? $_SESSION["username"] : null;
-
-// Definir la ruta base
-$base_url = '/landing-duki';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,7 +10,7 @@ $base_url = '/landing-duki';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrito - Tienda Duki</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="<?php echo get_base_url('styles.css'); ?>">
     <style>
         body {
             background: #18181c;
@@ -286,7 +284,7 @@ $base_url = '/landing-duki';
         <div id="tiempo-entrega" style="margin-top: 1rem; text-align: center; font-size: 1.2rem; color: #e0b800;"></div>
 
         <div class="carrito-acciones">
-            <a href="<?php echo $base_url; ?>/front/tienda.php" class="btn-seguir-comprando">SEGUIR COMPRANDO</a>
+            <a href="<?php echo get_base_url('front/tienda.php'); ?>" class="btn-seguir-comprando">SEGUIR COMPRANDO</a>
             <button onclick="finalizarCompra()" class="btn-finalizar-compra">FINALIZAR COMPRA</button>
         </div>
 
@@ -322,7 +320,7 @@ $base_url = '/landing-duki';
         }
     </style>
 
-    <script src="carrito.js"></script>
+    <script src="<?php echo get_base_url('front/carrito.js'); ?>"></script>
     <script>
         // Función para seleccionar método de pago
         function seleccionarMetodo(metodo) {
@@ -418,28 +416,24 @@ $base_url = '/landing-duki';
                 total += subtotal;
 
                 const precioConvertido = item.precio * factorCambio;
-                const subtotalConvertido = subtotal * factorCambio;
-
                 const itemHtml = `
                     <div class="carrito-item">
                         <img src="${item.imagen}" alt="${item.nombre}" class="carrito-item-img">
                         <div class="carrito-item-info">
                             <div class="carrito-item-nombre">${item.nombre}</div>
                             <div class="carrito-item-precio">${moneda} $${precioConvertido.toLocaleString('es-CL')}</div>
-                            <div class="carrito-item-subtotal" style="color: #e0b800; margin-top: 0.5rem;">Subtotal: ${moneda} $${subtotalConvertido.toLocaleString('es-CL')}</div>
-                        </div>
-                        <div class="carrito-item-acciones">
-                            <div class="cantidad-control">
-                                <button class="btn-cantidad" onclick="actualizarCantidad(${item.id}, ${item.cantidad - 1})">-</button>
-                                <span class="cantidad-valor">${item.cantidad}</span>
-                                <button class="btn-cantidad" onclick="actualizarCantidad(${item.id}, ${item.cantidad + 1})">+</button>
+                            <div class="carrito-item-acciones">
+                                <div class="cantidad-control">
+                                    <button class="btn-cantidad" onclick="actualizarCantidad(${item.id}, ${item.cantidad - 1})">-</button>
+                                    <span class="cantidad-valor">${item.cantidad}</span>
+                                    <button class="btn-cantidad" onclick="actualizarCantidad(${item.id}, ${item.cantidad + 1})">+</button>
+                                </div>
+                                <button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})">Eliminar</button>
                             </div>
-                            <button class="btn-eliminar" onclick="eliminarDelCarrito(${item.id})">Eliminar</button>
                         </div>
                     </div>
                 `;
                 carritoItems.innerHTML += itemHtml;
-                carritoTotalValor.textContent = `${moneda} $${(total * factorCambio).toLocaleString('es-CL')}`;
             });
 
             // Actualizar el total

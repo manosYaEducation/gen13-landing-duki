@@ -1,16 +1,9 @@
 <?php
+require_once __DIR__ . '/../../config.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 $user = isset($_SESSION["username"]) ? $_SESSION["username"] : null;
-$base_url = '/landing-duki';
+$base_url = get_base_url();
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body>
 <nav class="navbar">
     <div class="navbar-brand">
         <button class="menu-toggle" id="menu-toggle">
@@ -46,7 +39,7 @@ $base_url = '/landing-duki';
             <option value="CLP">CLP</option>
             <option value="ARS">ARS</option>
         </select>
-        <a href="<?php echo $base_url; ?>/front/carrito.php" class="navbar-link cart-link">
+        <a href="<?php echo get_base_url('front/carrito.php'); ?>" class="navbar-link cart-link">
             <i class="fas fa-shopping-cart"></i>
             <span class="cart-count">0</span>
         </a>
@@ -199,159 +192,50 @@ $base_url = '/landing-duki';
 .menu-toggle {
     display: none;
     flex-direction: column;
-    justify-content: space-between;
-    width: 30px;
-    height: 21px;
-    background: transparent;
+    background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
-    margin-right: 1rem;
+    padding: 0.5rem;
 }
 
 .menu-toggle span {
-    width: 100%;
+    width: 25px;
     height: 3px;
-    background-color: #fff;
-    border-radius: 3px;
-    transition: all 0.3s ease;
+    background: #fff;
+    margin: 3px 0;
+    transition: 0.3s;
 }
 
-@media (max-width: 820px) {
-    .navbar {
-        padding: 0.6rem 1rem;
-    }
-
+@media (max-width: 768px) {
     .menu-toggle {
         display: flex;
     }
-
-    .menu-toggle.active span:nth-child(1) {
-        transform: translateY(9px) rotate(45deg);
-    }
-
-    .menu-toggle.active span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .menu-toggle.active span:nth-child(3) {
-        transform: translateY(-9px) rotate(-45deg);
-    }
-
-    .nav-links, .nav-utils {
+    
+    .nav-links {
         display: none;
-        width: 100%;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem 0;
-        background-color: #000000;
         position: absolute;
         top: 100%;
         left: 0;
         right: 0;
-        border-bottom: 2.5px solid #6f0001;
+        background: rgba(30, 30, 32, 0.98);
+        flex-direction: column;
+        padding: 1rem;
+        border-bottom: 3px solid #6f0001;
     }
-
-    .nav-links.active, .nav-utils.active {
+    
+    .nav-links.active {
         display: flex;
     }
-
-    .navbar-link {
-        width: 100%;
-        text-align: center;
-        margin: 0.5rem 0;
-    }
-
-    .user-info {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .login-btn-navbar {
-        width: 100%;
-        text-align: center;
-        margin: 0.5rem 0;
-    }
-
-    .navbar-logo {
-        width: 36px;
-        height: 36px;
-    }
-}
-
-@media (max-width: 480px) {
-    .navbar {
-        padding: 0.6rem 0.8rem;
-    }
-
-    .navbar-logo {
-        width: 28px;
-        height: 28px;
-    }
-
-    .navbar-link {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
-    }
-
-    .login-btn-navbar {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
+    
+    .nav-utils {
+        margin-left: auto;
     }
 }
 </style>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.getElementById('menu-toggle');
+document.getElementById('menu-toggle').addEventListener('click', function() {
     const navLinks = document.querySelector('.nav-links');
-    const navUtils = document.querySelector('.nav-utils');
-
-    menuToggle.addEventListener('click', function() {
-        this.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        navUtils.classList.toggle('active');
-    });
-
-    // Cerrar menú al hacer clic en un enlace
-    document.querySelectorAll('.navbar-link').forEach(link => {
-        link.addEventListener('click', () => {
-            menuToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-            navUtils.classList.remove('active');
-        });
-    });
-
-    // Cerrar menú al hacer clic fuera
-    document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !navLinks.contains(e.target) && !navUtils.contains(e.target)) {
-            menuToggle.classList.remove('active');
-            navLinks.classList.remove('active');
-            navUtils.classList.remove('active');
-        }
-    });
-
-    // Actualizar contador del carrito
-    function updateCartCount() {
-        const cart = JSON.parse(localStorage.getItem('carritoDuki')) || [];
-        const count = cart.reduce((total, item) => total + item.cantidad, 0);
-        document.querySelectorAll('.cart-count').forEach(el => {
-            el.textContent = count;
-            el.style.display = count > 0 ? 'flex' : 'none';
-        });
-    }
-    
-    // Actualizar contador inicial
-    updateCartCount();
-    
-    // Escuchar cambios en el localStorage
-    window.addEventListener('storage', updateCartCount);
-    
-    // Exponer la función globalmente para que pueda ser llamada desde otras páginas
-    window.updateCartCount = updateCartCount;
+    navLinks.classList.toggle('active');
 });
-</script>
-</body>
-</html> 
+</script> 

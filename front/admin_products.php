@@ -1,14 +1,12 @@
 <?php
+require_once __DIR__ . '/../config.php';
 session_start();
 if (!isset($_SESSION["user_id"]) || $_SESSION["role"] !== "admin") {
-    header("Location: ../login.php");
+    header("Location: " . get_base_url('login.php'));
     exit();
 }
 
 require_once '../db.php';
-
-// Definir la ruta base
-$base_url = '/landing-duki';
 
 // Procesar eliminación de producto
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
@@ -27,24 +25,24 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
         // Ahora eliminar el producto de la base de datos
         if ($conn->query("DELETE FROM products WHERE id = $product_id")) {
             // Si tiene imagen y la imagen está en nuestro servidor, la eliminamos
-            if (!empty($product['image']) && strpos($product['image'], '/landing-duki/assets/') !== false) {
-                $image_path = $_SERVER['DOCUMENT_ROOT'] . $product['image'];
+            if (!empty($product['image']) && strpos($product['image'], get_base_url('assets/')) !== false) {
+                $image_path = $_SERVER['DOCUMENT_ROOT'] . str_replace(get_base_url(), '', $product['image']);
                 if (file_exists($image_path)) {
                     unlink($image_path);
                 }
             }
             
             // Mostrar mensaje de éxito y redirigir
-            echo '<script>alert("Producto eliminado correctamente"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+            echo '<script>alert("Producto eliminado correctamente"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
             exit;
         } else {
             // Error al eliminar
-            echo '<script>alert("Error al eliminar el producto: ' . $conn->error . '"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+            echo '<script>alert("Error al eliminar el producto: ' . $conn->error . '"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
             exit;
         }
     } else {
         // Producto no encontrado
-        echo '<script>alert("Producto no encontrado"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+        echo '<script>alert("Producto no encontrado"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
         exit;
     }
 }
@@ -55,7 +53,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
     $product = $conn->query("SELECT * FROM products WHERE id = $product_id")->fetch_assoc();
     
     if (!$product) {
-        echo '<script>alert("Producto no encontrado"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+        echo '<script>alert("Producto no encontrado"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
         exit;
     }
 ?>
@@ -190,7 +188,7 @@ if (isset($_GET['edit']) && is_numeric($_GET['edit'])) {
             
             <div class="buttons">
                 <button type="submit" name="update_product" class="btn">GUARDAR CAMBIOS</button>
-                <a href="<?php echo $base_url; ?>/front/dashboard.php" class="btn btn-cancel">CANCELAR</a>
+                <a href="<?php echo get_base_url('front/dashboard.php'); ?>" class="btn btn-cancel">CANCELAR</a>
             </div>
         </form>
     </div>
@@ -212,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
     $current_product = $conn->query("SELECT * FROM products WHERE id = $product_id")->fetch_assoc();
     
     if (!$current_product) {
-        echo '<script>alert("Producto no encontrado"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+        echo '<script>alert("Producto no encontrado"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
         exit;
     }
     
@@ -224,11 +222,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
         $target = '../assets/tienda/' . $img_name;
         
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-            $image_url = '/landing-duki/assets/tienda/' . $img_name;
+            $image_url = get_base_url('assets/tienda/') . $img_name;
             
             // Si tenía una imagen anterior, la eliminamos
-            if (!empty($current_product['image']) && strpos($current_product['image'], '/landing-duki/assets/') !== false) {
-                $old_image_path = $_SERVER['DOCUMENT_ROOT'] . $current_product['image'];
+            if (!empty($current_product['image']) && strpos($current_product['image'], get_base_url('assets/')) !== false) {
+                $old_image_path = $_SERVER['DOCUMENT_ROOT'] . str_replace(get_base_url(), '', $current_product['image']);
                 if (file_exists($old_image_path)) {
                     unlink($old_image_path);
                 }
@@ -243,15 +241,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_product'])) {
     if ($stmt->execute()) {
         // Eliminado el registro de cambio de stock
         
-        echo '<script>alert("Producto actualizado correctamente"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+        echo '<script>alert("Producto actualizado correctamente"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
         exit;
     } else {
-        echo '<script>alert("Error al actualizar producto: ' . $conn->error . '"); window.location.href="' . $base_url . '/front/dashboard.php";</script>';
+        echo '<script>alert("Error al actualizar producto: ' . $conn->error . '"); window.location.href="' . get_base_url('front/dashboard.php') . '";</script>';
         exit;
     }
 }
 
 // Si no hay acción definida, redirigir al dashboard
-header("Location: " . $base_url . "/front/dashboard.php");
+header("Location: " . get_base_url("front/dashboard.php"));
 exit;
 ?>

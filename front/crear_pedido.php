@@ -1,6 +1,9 @@
 <?php
+require_once __DIR__ . '/../config.php';
 session_start();
-require_once '../db.php';
+
+// Obtener conexión a la base de datos
+$conn = get_db_connection();
 
 header('Content-Type: application/json');
 

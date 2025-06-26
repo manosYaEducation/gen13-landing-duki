@@ -223,9 +223,9 @@ body {
 }
 </style>
 <div class="login-container">
-    <img src="/landing-duki/assets/ameri.png" alt="Logo" class="login-logo">
+    <img src="../assets/ameri.png" alt="Logo" class="login-logo">
     <div class="login-title">INICIAR SESIÓN</div>
-    <form class="login-form" method="POST" action="/landing-duki/login.php">
+    <form class="login-form" method="POST" action="../login.php">
         <div class="input-group">
             <label for="username">Usuario</label>
             <input type="text" id="username" name="username" required>
@@ -245,10 +245,10 @@ body {
     
     <div class="login-register">
         ¿No tienes cuenta?
-        <a href="/landing-duki/register.php">Regístrate</a>
+        <a href="../register.php">Regístrate</a>
     </div>
     
-    <a href="/landing-duki/front/tienda.php" class="back-to-store">
+    <a href="/front/tienda.php" class="back-to-store">
         <span>←</span> Volver a la tienda
     </a>
 </div>
@@ -272,7 +272,7 @@ body {
 
         // Inicializar FirebaseUI
         const uiConfig = {
-            signInSuccessUrl: '/landing-duki/front/tienda.php',
+            signInSuccessUrl: 'tienda.php',
             signInOptions: [
                 firebase.auth.GoogleAuthProvider.PROVIDER_ID,
                 {
@@ -280,8 +280,8 @@ body {
                     requireDisplayName: false
                 }
             ],
-            tosUrl: '/landing-duki/terminos.html',
-            privacyPolicyUrl: '/landing-duki/privacidad.html',
+            tosUrl: '../terminos.html',
+            privacyPolicyUrl: '../privacidad.html',
             signInFlow: 'popup',
             callbacks: {
                 signInSuccessWithAuthResult: function(authResult, redirectUrl) {
@@ -291,7 +291,7 @@ body {
                             // Enviar el token al servidor PHP para autenticación
                             const form = document.createElement('form');
                             form.method = 'POST';
-                            form.action = '/landing-duki/auth/firebase.php';
+                            form.action = '../auth/firebase.php';
                             
                             const tokenInput = document.createElement('input');
                             tokenInput.type = 'hidden';

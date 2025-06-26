@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/config.php';
 include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -18,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $username, $email, $password);
         if ($stmt->execute()) {
-            echo "Registro exitoso. Ahora puedes iniciar sesi√≥n.";
+            echo "Registro exitoso. Ahora puedes iniciar sesi®Æn.";
         } else {
             echo "Error en el registro.";
         }

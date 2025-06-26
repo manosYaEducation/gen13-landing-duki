@@ -1,9 +1,8 @@
 <?php
+require_once __DIR__ . '/../config.php';
 session_start();
 $user = isset($_SESSION["username"]) ? $_SESSION["username"] : null;
 
-// Definir la ruta base
-$base_url = '/landing-duki';
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -12,7 +11,8 @@ $base_url = '/landing-duki';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda Duki</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="<?php echo get_base_url('styles.css'); ?>">
 </head>
 <body>
     <style>
@@ -145,18 +145,17 @@ body {
 <body>
     
 <?php include 'components/navbar.php'; ?>
-</div>
     <div class="tienda-title"></div>
     <div class="products-container">
     <?php
-    require_once '../db.php';
+    $conn = get_db_connection();
     $prods = $conn->query("SELECT * FROM products ORDER BY id DESC");
     while($row = $prods->fetch_assoc()): ?>
-        <div class="product-card" onclick="window.location='<?php echo $base_url; ?>/front/producto_detalle.php?id=<?php echo $row['id']; ?>'" style="cursor:pointer;">
+        <div class="product-card" onclick="window.location='<?php echo get_base_url('front/producto_detalle.php'); ?>?id=<?php echo $row['id']; ?>'" style="cursor:pointer;">
             <?php if($row['image']): ?>
-                <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="product-img" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='<?php echo $base_url; ?>/front/producto_detalle.php?id=<?php echo $row['id']; ?>'">
+                <img src="<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="product-img" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='<?php echo get_base_url('front/producto_detalle.php'); ?>?id=<?php echo $row['id']; ?>'">
             <?php endif; ?>
-            <div class="product-name" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='<?php echo $base_url; ?>/front/producto_detalle.php?id=<?php echo $row['id']; ?>'">
+            <div class="product-name" style="cursor:pointer;" onclick="event.stopPropagation(); window.location='<?php echo get_base_url('front/producto_detalle.php'); ?>?id=<?php echo $row['id']; ?>'">
                 <?php echo htmlspecialchars($row['name']); ?>
             </div>
             <?php if(isset($row['description'])): ?>
@@ -168,7 +167,7 @@ body {
     <?php endwhile; ?>
 </div>
     <div class="notificacion" id="notificacion"></div>
-    <script src="carrito.js"></script>
+    <script src="<?php echo get_base_url('front/carrito.js'); ?>"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             actualizarContadorCarrito();
@@ -176,7 +175,7 @@ body {
         
         // Función para agregar al carrito desde esta página
         function addToCart(id, nombre, precio, imagen) {
-            agregarAlCarrito(id, nombre, precio, imagen);
+            agregarAlCarrito(id, nombre, precio, imagen, 1);
             event.stopPropagation();
             
             // Mostrar notificación centrada

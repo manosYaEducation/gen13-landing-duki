@@ -1,4 +1,5 @@
 <?php
+require_once 'config.php';
 require_once 'db.php';
 
 // Verificar conexión
@@ -16,7 +17,7 @@ if ($result->num_rows > 0) {
     
     while($row = $result->fetch_assoc()) {
         $image_path = $row['image'];
-        $full_path = $_SERVER['DOCUMENT_ROOT'] . '/landing-duki/' . ltrim($image_path, '/');
+        $full_path = $_SERVER['DOCUMENT_ROOT'] . str_replace(get_base_url(), '', $image_path);
         $exists = file_exists($full_path) ? 'Sí' : 'No';
         
         echo "<tr>";
@@ -34,7 +35,7 @@ if ($result->num_rows > 0) {
 }
 
 // Verificar permisos de la carpeta de imágenes
-$images_dir = $_SERVER['DOCUMENT_ROOT'] . '/landing-duki/assets/tienda';
+$images_dir = $_SERVER['DOCUMENT_ROOT'] . str_replace(get_base_url(), '', get_base_url('assets/tienda'));
 echo "<h2>Permisos de la carpeta de imágenes:</h2>";
 echo "Ruta: " . $images_dir . "<br>";
 echo "¿Existe? " . (is_dir($images_dir) ? 'Sí' : 'No') . "<br>";
@@ -50,7 +51,7 @@ echo "<h2>Verificando algunas imágenes de ejemplo:</h2>";
 echo "<div style='display: flex; flex-wrap: wrap; gap: 20px;'>";
 foreach ($example_images as $img) {
     $img_path = $images_dir . '/' . $img;
-    $img_url = '/landing-duki/assets/tienda/' . $img;
+    $img_url = get_base_url('assets/tienda/') . $img;
     $exists = file_exists($img_path);
     
     echo "<div style='border: 1px solid #ccc; padding: 10px; text-align: center;'>";

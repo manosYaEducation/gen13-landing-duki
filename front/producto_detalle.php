@@ -1,14 +1,10 @@
 <?php
 // producto_detalle.php
+require_once __DIR__ . '/../config.php';
 session_start();
-require_once '../db.php';
 
-// Verificar la ruta base
-echo '<!-- Ruta base: ' . $_SERVER['DOCUMENT_ROOT'] . ' -->';
-echo '<!-- Ruta actual: ' . __FILE__ . ' -->';
-
-// Definir la ruta base
-$base_url = '/landing-duki';
+// Obtener la conexión a la base de datos
+$conn = get_db_connection();
 
 // Obtener el ID del producto desde la URL
 if (!isset($_GET['id'])) {
@@ -31,10 +27,10 @@ if (!$producto) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($producto['name']); ?> - Duki</title>
+    <title>Duki - <?php echo htmlspecialchars($producto['name']); ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="<?php echo get_base_url('styles.css'); ?>">
     <style>
         body {
             background: #18181c;
@@ -126,7 +122,7 @@ if (!$producto) {
             -webkit-appearance: none;
             margin: 0;
         }
-        .btn-comprar {
+        .add-to-cart-btn {
             background: linear-gradient(90deg, #400208 0%, #6f0001 100%);
             color: #fff;
             border: none;
@@ -142,11 +138,11 @@ if (!$producto) {
             transition: background 0.2s, box-shadow 0.2s;
             text-decoration: none;
         }
-        .btn-comprar:hover {
+        .add-to-cart-btn:hover {
             background: linear-gradient(90deg, #6f0001 0%, #400208 100%);
             box-shadow: 0 0 24px #6f0001;
         }
-        .btn-volver {
+        .back-link {
             background: #23232a;
             color: #fff;
             border: 2px solid #6f0001;
@@ -160,7 +156,7 @@ if (!$producto) {
             transition: background 0.2s, color 0.2s;
             text-decoration: none;
         }
-        .btn-volver:hover {
+        .back-link:hover {
             background: #6f0001;
             color: #fff;
         }
@@ -185,7 +181,7 @@ if (!$producto) {
             .producto-acciones {
                 flex-direction: column;
             }
-            .btn-comprar, .btn-volver {
+            .add-to-cart-btn, .back-link {
                 width: 100%;
                 text-align: center;
             }
@@ -228,8 +224,12 @@ if (!$producto) {
                         <input type="number" id="cantidad" value="1" min="1" max="99" onchange="validarCantidad()">
                         <button class="btn-cantidad" onclick="cambiarCantidad(1)">+</button>
         </div>
-                    <button class="btn-comprar" onclick="agregarAlCarrito(<?php echo $producto['id']; ?>, '<?php echo addslashes(htmlspecialchars($producto['name'])); ?>', <?php echo $producto['price']; ?>, '<?php echo addslashes(htmlspecialchars($producto['image'])); ?>');">AGREGAR AL CARRITO</button>
-                    <a href="tienda.php" class="btn-volver">VOLVER A LA TIENDA</a>
+                    <button class="add-to-cart-btn" onclick="agregarAlCarritoLocal(<?php echo $producto['id']; ?>, '<?php echo addslashes(htmlspecialchars($producto['name'])); ?>', <?php echo $producto['price']; ?>, '<?php echo addslashes(htmlspecialchars($producto['image'])); ?>');">
+                Añadir al carrito
+            </button>
+                    <a href="<?php echo get_base_url('front/tienda.php'); ?>" class="back-link">
+            <i class="fas fa-arrow-left"></i> Volver a la tienda
+        </a>
             </div>
             </div>
         </div>
@@ -237,6 +237,7 @@ if (!$producto) {
 
     <div class="notificacion" id="notificacion"></div>
 
+    <script src="<?php echo get_base_url('front/carrito.js'); ?>"></script>
     <script>
     function cambiarCantidad(delta) {
         const input = document.getElementById('cantidad');
@@ -254,43 +255,9 @@ if (!$producto) {
         input.value = valor;
     }
 
-    function agregarAlCarrito(id, nombre, precio, imagen) {
+    function agregarAlCarritoLocal(id, nombre, precio, imagen) {
         const cantidad = parseInt(document.getElementById('cantidad').value);
-        let carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
-        const productoExistente = carrito.find(item => item.id === id);
-
-        if (productoExistente) {
-            productoExistente.cantidad += cantidad;
-        } else {
-            carrito.push({
-                id: id,
-                nombre: nombre,
-                precio: precio,
-                imagen: imagen,
-                cantidad: cantidad
-            });
-        }
-
-        localStorage.setItem('carritoDuki', JSON.stringify(carrito));
-            actualizarContadorCarrito();
-        mostrarNotificacion('Producto agregado al carrito');
-    }
-
-    function actualizarContadorCarrito() {
-        const carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
-        const count = carrito.reduce((total, item) => total + item.cantidad, 0);
-        document.querySelectorAll('.cart-count').forEach(el => {
-            el.textContent = count;
-        });
-    }
-
-    function mostrarNotificacion(mensaje) {
-        const notificacion = document.getElementById('notificacion');
-        notificacion.textContent = mensaje;
-        notificacion.style.display = 'block';
-        setTimeout(() => {
-            notificacion.style.display = 'none';
-        }, 2000);
+        agregarAlCarrito(id, nombre, precio, imagen, cantidad);
     }
 
     // Inicializar contador del carrito

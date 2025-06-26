@@ -11,18 +11,14 @@ function agregarAlCarrito(id, nombre, precio, imagen, cantidad = 1) {
     }
     guardarCarrito();
     mostrarNotificacion(`${nombre} agregado al carrito`);
-    if (typeof window.updateCartCount === 'function') {
-        window.updateCartCount();
-    }
+    actualizarContadorCarrito();
 }
 
 // Eliminar producto del carrito
 function eliminarDelCarrito(id) {
     carrito = carrito.filter(item => item.id !== id);
     guardarCarrito();
-    if (typeof window.updateCartCount === 'function') {
-        window.updateCartCount();
-    }
+    actualizarContadorCarrito();
     if (typeof renderizarCarrito === 'function') {
         renderizarCarrito();
     }
@@ -42,9 +38,7 @@ function actualizarCantidad(id, nuevaCantidad) {
             renderizarCarrito();
         }
     }
-    if (typeof window.updateCartCount === 'function') {
-        window.updateCartCount();
-    }
+    actualizarContadorCarrito();
 }
 
 // Guardar carrito en localStorage
@@ -56,9 +50,7 @@ function guardarCarrito() {
 function vaciarCarrito() {
     carrito = [];
     guardarCarrito();
-    if (typeof window.updateCartCount === 'function') {
-        window.updateCartCount();
-    }
+    actualizarContadorCarrito();
     if (typeof renderizarCarrito === 'function') {
         renderizarCarrito();
     }
@@ -90,29 +82,32 @@ function mostrarNotificacion(mensaje) {
 
 // Actualizar contador del carrito
 function actualizarContadorCarrito() {
-    if (typeof window.updateCartCount === 'function') {
-        window.updateCartCount();
-    }
+    const carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
+    const count = carrito.reduce((total, item) => total + item.cantidad, 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = count;
+    });
 }
 
 // Moneda seleccionada en tienda
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof window.updateCartCount === 'function') {
-        window.updateCartCount();
-    }
+    actualizarContadorCarrito();
 
     // Cargar moneda guardada
-    const monedaGuardada = localStorage.getItem('monedaSeleccionada') || 'CLP';
-    document.getElementById('moneda-tienda').value = monedaGuardada;
+    const monedaSelect = document.getElementById('moneda-tienda');
+    if (monedaSelect) {
+        const monedaGuardada = localStorage.getItem('monedaSeleccionada') || 'CLP';
+        monedaSelect.value = monedaGuardada;
 
-    // Al cambiar moneda → guardar y recargar la página para actualizar precios
-    document.getElementById('moneda-tienda').addEventListener('change', (e) => {
-        localStorage.setItem('monedaSeleccionada', e.target.value);
-        location.reload();
-    });
+        // Al cambiar moneda → guardar y recargar la página para actualizar precios
+        monedaSelect.addEventListener('change', (e) => {
+            localStorage.setItem('monedaSeleccionada', e.target.value);
+            location.reload();
+        });
 
-    // Actualizar precios en productos
-    actualizarPreciosProductos();
+        // Actualizar precios en productos
+        actualizarPreciosProductos();
+    }
 
     function actualizarPreciosProductos() {
         const moneda = localStorage.getItem('monedaSeleccionada') || 'CLP';

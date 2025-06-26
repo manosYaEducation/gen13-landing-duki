@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Carrito</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #18181c;
+            color: #fff;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #6f0001;
+            border-radius: 8px;
+        }
+        button {
+            background: #6f0001;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #400208;
+        }
+        .cart-info {
+            background: #23232a;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test del Carrito</h1>
+    
+    <div class="test-section">
+        <h2>Agregar Productos</h2>
+        <button onclick="testAddProduct(1, 'Producto Test 1', 10000, 'test1.jpg')">Agregar Producto 1</button>
+        <button onclick="testAddProduct(2, 'Producto Test 2', 15000, 'test2.jpg')">Agregar Producto 2</button>
+        <button onclick="testAddProduct(3, 'Producto Test 3', 20000, 'test3.jpg')">Agregar Producto 3</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Información del Carrito</h2>
+        <div class="cart-info" id="cart-info">
+            <p>Carrito vacío</p>
+        </div>
+        <button onclick="showCartInfo()">Actualizar Info</button>
+        <button onclick="clearCart()">Vaciar Carrito</button>
+    </div>
+
+    <div class="test-section">
+        <h2>Contador del Carrito</h2>
+        <div class="cart-count">0</div>
+        <button onclick="updateCartCount()">Actualizar Contador</button>
+    </div>
+
+    <script src="front/carrito.js"></script>
+    <script>
+        function testAddProduct(id, nombre, precio, imagen) {
+            agregarAlCarrito(id, nombre, precio, imagen, 1);
+            showCartInfo();
+            updateCartCount();
+        }
+
+        function showCartInfo() {
+            const carrito = JSON.parse(localStorage.getItem('carritoDuki')) || [];
+            const cartInfo = document.getElementById('cart-info');
+            
+            if (carrito.length === 0) {
+                cartInfo.innerHTML = '<p>Carrito vacío</p>';
+                return;
+            }
+
+            let html = '<h3>Productos en el carrito:</h3>';
+            let total = 0;
+            
+            carrito.forEach(item => {
+                const subtotal = item.precio * item.cantidad;
+                total += subtotal;
+                html += `
+                    <div style="margin: 10px 0; padding: 10px; background: #18181c; border-radius: 5px;">
+                        <strong>${item.nombre}</strong><br>
+                        Precio: $${item.precio.toLocaleString('es-CL')}<br>
+                        Cantidad: ${item.cantidad}<br>
+                        Subtotal: $${subtotal.toLocaleString('es-CL')}
+                        <button onclick="eliminarDelCarrito(${item.id}); showCartInfo(); updateCartCount();">Eliminar</button>
+                    </div>
+                `;
+            });
+            
+            html += `<h3>Total: $${total.toLocaleString('es-CL')}</h3>`;
+            cartInfo.innerHTML = html;
+        }
+
+        function clearCart() {
+            vaciarCarrito();
+            showCartInfo();
+            updateCartCount();
+        }
+
+        function updateCartCount() {
+            actualizarContadorCarrito();
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            showCartInfo();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html> 
